@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "minepedia",
+  "version": "${version}",
+  "name": "Minepedia",
+  "description": "Bring the Bedrock edition Encyclopaedia to Minecraft: Java Edition",
+  "authors": [
+    "JimiIT92"
+  ],
+  "contact": {
+    "website": "https://modrinth.com/mod/minepedia",
+    "repo": "https://github.com/JimiIT92/Minepedia"
+  },
+  "license": "MIT",
+  "icon": "assets/minepedia/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "org.minepedia.Minepedia"
+    ],
+    "main": []
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

@@ -1,5 +1,26 @@
 {
   "category.minepedia": "Minepedia",
   "key.minepedia.screen": "Open Minepedia Screen",
-  "screen.minepedia.title": "Minepedia"
+  "screen.minepedia.title": "Minepedia",
+  "menu.minepedia.header.getting_started": "Getting started",
+  "menu.minepedia.header.preparing_for_the_night": "Preparing for the night",
+  "menu.minepedia.header.surviving_the_first_night": "Surviving the first Night",
+  "menu.minepedia.header.getting_settled": "Getting settled",
+  "menu.minepedia.moving_around": "Moving around",
+  "menu.minepedia.gathering_resources": "Gathering resources",
+  "menu.minepedia.selecting_items": "Selecting items",
+  "menu.minepedia.placing_blocks": "Placing blocks",
+  "menu.minepedia.inventory": "Inventory",
+  "menu.minepedia.your_first_craft": "Your first craft",
+  "menu.minepedia.recipe_book": "Recipe Book",
+  "menu.minepedia.the_crafting_table": "The Crafting Table",
+  "menu.minepedia.crafting_a_tool": "Crafting a Tool",
+  "menu.minepedia.mining": "Mining",
+  "menu.minepedia.nightfall": "Nightfall",
+  "menu.minepedia.building_a_shelter": "Building a Shelter",
+  "menu.minepedia.death_and_respawn": "Death and Respawn",
+  "menu.minepedia.food": "Food",
+  "menu.minepedia.beds": "Beds",
+  "menu.minepedia.improved_tools": "Improved tools",
+  "menu.minepedia.encyclopaedia": "Encyclopaedia"
 }

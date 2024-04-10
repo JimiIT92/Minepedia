@@ -2,6 +2,7 @@ package org.minepedia.screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import org.minepedia.Minepedia;
@@ -12,7 +13,7 @@ import org.minepedia.screen.widget.MinepediaMenuWidget;
  * The main {@link Minepedia Minepedia} {@link Screen Screen}
  */
 @Environment(EnvType.CLIENT)
-public final class MinepediaScreen extends Screen {
+public abstract class MinepediaScreen extends Screen {
 
     /**
      * {@link MinepediaMenuWidget.MinepediaMenuItem The selected menu item}
@@ -26,12 +27,19 @@ public final class MinepediaScreen extends Screen {
      * The {@link MinepediaEntryWidget selected menu item text wdget}
      */
     private MinepediaEntryWidget textWidget;
+    /**
+     * The {@link MinepediaMenuWidget.MinepediaMenuItem menu items}
+     */
+    private final MinepediaMenuWidget.MinepediaMenuItem[] menuItems;
 
     /**
      * Constructor. Set the {@link Screen Screen} {@link Text Title}
+     *
+     * @param menuItems {@link MinepediaMenuWidget.MinepediaMenuItem The menu items}
      */
-    public MinepediaScreen() {
+    public MinepediaScreen(final MinepediaMenuWidget.MinepediaMenuItem... menuItems) {
         super(Text.translatable("screen." + Minepedia.MOD_ID + ".title"));
+        this.menuItems = menuItems;
     }
 
     /**
@@ -39,17 +47,45 @@ public final class MinepediaScreen extends Screen {
      */
     @Override
     protected void init() {
-        final int menuOffsetX = 7;
+        final int menuOffsetX = 5;
         menuWidget = new MinepediaMenuWidget(this.client, this, menuOffsetX);
+        menuWidget.init(this.menuItems);
         addDrawableChild(menuWidget);
-        textWidget = new MinepediaEntryWidget(menuOffsetX + menuWidget.getWidth() + menuOffsetX + (menuOffsetX / 2), MinepediaMenuWidget.WIDGET_Y, this.width - menuWidget.getWidth() - (menuOffsetX * 3), menuWidget.getHeight(), this.textRenderer);
+        textWidget = new MinepediaEntryWidget(menuOffsetX + menuWidget.getWidth(), MinepediaMenuWidget.WIDGET_Y, this.width - menuWidget.getWidth() - (menuOffsetX * 3), menuWidget.getHeight(), this.textRenderer);
         addDrawableChild(textWidget);
     }
 
-    /*@Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
-    }*/
+    /**
+     * Close the {@link Screen Screen}
+     */
+    @Override
+    public void close() {
+        super.close();
+        final Screen parent = this.getParent();
+        if(parent != null && this.client != null) {
+            this.client.setScreen(parent);
+        }
+    }
+
+    /**
+     * Get the {@link Screen Parent Screen}
+     *
+     * @return {@link Screen The Parent Screen}
+     */
+    protected abstract Screen getParent();
+
+    /**
+     * Keep the {@link MinepediaMenuWidget.MinepediaMenuItem selected Menu Item} on screen resize
+     *
+     * @param client {@link MinecraftClient The Minecraft Client instance}
+     * @param width {@link Integer The screen width}
+     * @param height {@link Integer The screen height}
+     */
+    @Override
+    public void resize(final MinecraftClient client, final int width, final int height) {
+        super.resize(client, width, height);
+        this.menuWidget.setSelected(this.selectedMenuItem);
+    }
 
     /**
      * Make the {@link Screen Screen} not pausing the game
@@ -70,7 +106,5 @@ public final class MinepediaScreen extends Screen {
         this.selectedMenuItem = menuItem;
         this.textWidget.selectEntry(this.selectedMenuItem);
     }
-
-
 
 }

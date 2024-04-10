@@ -8,7 +8,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 import org.minepedia.Minepedia;
-import org.minepedia.screen.MinepediaScreen;
+import org.minepedia.screen.MinepediaIndexScreen;
 
 /**
  * {@link Minepedia Minepedia} {@link KeyBinding Key Bindings}
@@ -28,7 +28,7 @@ public final class MinepediaKeyBindings {
         MINEPEDIA_KEY = registerKeyBinding("screen", GLFW.GLFW_KEY_K);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (MINEPEDIA_KEY.wasPressed()) {
-                client.setScreen(new MinepediaScreen());
+                client.setScreen(new MinepediaIndexScreen());
             }
         });
     }

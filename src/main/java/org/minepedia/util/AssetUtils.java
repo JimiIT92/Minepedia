@@ -9,6 +9,7 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.text.Text;
 import org.minepedia.Minepedia;
+import org.minepedia.screen.widget.MinepediaMenuWidget;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -48,21 +49,23 @@ public final class AssetUtils {
     /**
      * Read a {@link Minepedia Minepedia entry file}
      *
+     * @param section {@link MinepediaMenuWidget.MinepediaSection The entry section}
      * @param entryTitle {@link String The entry title}
      * @return {@link String The entry file text}
      */
-    public static String readEntry(final String entryTitle) {
-        return getEntry(entryTitle).map(AssetUtils::readEntryFile).orElse("");
+    public static String readEntry(final MinepediaMenuWidget.MinepediaSection section, final String entryTitle) {
+        return getEntry(section, entryTitle).map(AssetUtils::readEntryFile).orElse("");
     }
 
     /**
      * Get a {@link Minepedia Minepedia entry file path}
      *
+     * @param section {@link MinepediaMenuWidget.MinepediaSection The entry section}
      * @param entryTitle {@link String The entry title}
      * @return The {@link Optional<Path> Entry file path, if any}
      */
-    private static Optional<Path> getEntry(final String entryTitle) {
-        return getAsset("entries/" + OPTIONS.language.toLowerCase(Locale.ROOT) + "/" + entryTitle + ".mpe");
+    private static Optional<Path> getEntry(final MinepediaMenuWidget.MinepediaSection section, final String entryTitle) {
+        return getAsset("entries/" + OPTIONS.language.toLowerCase(Locale.ROOT) + "/" + section.name().toLowerCase(Locale.ROOT) + "/" + entryTitle + ".mpe");
     }
 
     /**
@@ -111,6 +114,11 @@ public final class AssetUtils {
         rawEntryFile = rawEntryFile.replace("{{ctrl.down}}", getKey(OPTIONS.backKey));
         rawEntryFile = rawEntryFile.replace("{{ctrl.right}}", getKey(OPTIONS.rightKey));
         rawEntryFile = rawEntryFile.replace("{{ctrl.jump}}", getKey(OPTIONS.jumpKey));
+        rawEntryFile = rawEntryFile.replace("{{ctrl.attack}}", getKey(OPTIONS.attackKey));
+        rawEntryFile = rawEntryFile.replace("{{ctrl.use}}", getKey(OPTIONS.useKey));
+        rawEntryFile = rawEntryFile.replace("{{ctrl.inventory}}", getKey(OPTIONS.inventoryKey));
+        rawEntryFile = rawEntryFile.replace("{{ctrl.hotbar.first}}", getKey(OPTIONS.hotbarKeys[0]));
+        rawEntryFile = rawEntryFile.replace("{{ctrl.hotbar.last}}", getKey(OPTIONS.hotbarKeys[OPTIONS.hotbarKeys.length - 1]));
         return Text.translatable(rawEntryFile).getString();
     }
 

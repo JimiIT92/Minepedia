@@ -5,6 +5,8 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.sound.PositionedSoundInstance;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaScreen;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -21,13 +24,17 @@ import java.util.Objects;
 public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<MinepediaMenuWidget.MinepediaMenuItem> {
 
     /**
+     * The {@link Identifier GUI Arrows Texture Identifier}
+     */
+    private final Identifier ARROWS_TEXTURE = new Identifier(Minepedia.MOD_ID, "textures/gui/arrows.png");
+    /**
      * {@link MinepediaScreen The Minepedia main screen}
      */
     private final MinepediaScreen parentScreen;
     /**
      * {@link Integer The Widget Y offset}
      */
-    public static final int WIDGET_Y_OFFSET = 40;
+    public static final int WIDGET_Y_OFFSET = 20;
     /**
      * {@link Integer The Widget Y coordinate}
      */
@@ -44,28 +51,17 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.currentScreen).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
         this.setPosition(x, WIDGET_Y);
         this.parentScreen = parentScreen;
-        this.addEntry(new MinepediaMenuItem("getting_started", true));
-        this.addEntry(new MinepediaMenuItem("moving_around", new ImageData("moving_around", 512, 304, ImagePosition.END)));
-        this.addEntry(new MinepediaMenuItem("gathering_resources"));
-        this.addEntry(new MinepediaMenuItem("selecting_items", new ImageData("selecting_items", 512, 272, ImagePosition.END)));
-        this.addEntry(new MinepediaMenuItem("placing_blocks"));
-        this.addEntry(new MinepediaMenuItem("inventory", new ImageData("inventory", 512, 281, ImagePosition.START)));
-        this.addEntry(new MinepediaMenuItem("preparing_for_the_night", true));
-        this.addEntry(new MinepediaMenuItem("your_first_craft", new ImageData("your_first_craft", 512, 272, ImagePosition.START)));
-        this.addEntry(new MinepediaMenuItem("recipe_book"));
-        this.addEntry(new MinepediaMenuItem("the_crafting_table", new ImageData("the_crafting_table", 512, 304, ImagePosition.START)));
-        this.addEntry(new MinepediaMenuItem("crafting_a_tool"));
-        this.addEntry(new MinepediaMenuItem("mining", new ImageData("mining", 512, 304, ImagePosition.START)));
-        this.addEntry(new MinepediaMenuItem("surviving_the_first_night", true));
-        this.addEntry(new MinepediaMenuItem("nightfall"));
-        this.addEntry(new MinepediaMenuItem("building_a_shelter", new ImageData("building_a_shelter", 512, 304, ImagePosition.START)));
-        this.addEntry(new MinepediaMenuItem("death_and_respawn"));
-        this.addEntry(new MinepediaMenuItem("getting_settled", true));
-        this.addEntry(new MinepediaMenuItem("food"));
-        this.addEntry(new MinepediaMenuItem("beds"));
-        this.addEntry(new MinepediaMenuItem("improved_tools"));
-        this.addEntry(new MinepediaMenuItem("", true));
-        this.addEntry(new MinepediaMenuItem("encyclopaedia"));
+    }
+
+    /**
+     * Initialize the {@link MinepediaMenuWidget Menu} with the provided {@link MinepediaMenuItem Menu Items}
+     *
+     * @param menuItems The {@link MinepediaMenuItem Menu Items}
+     */
+    public void init(final MinepediaMenuItem... menuItems) {
+        if(menuItems != null) {
+            Arrays.stream(menuItems).map(entry -> entry.setMenu(this)).forEach(this::addEntry);
+        }
     }
 
     /**
@@ -76,9 +72,25 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     @Override
     public void setSelected(final @Nullable MinepediaMenuItem entry) {
         if (entry != null && !entry.isHeader) {
-            super.setSelected(entry);
-            this.parentScreen.selectMenuItem(entry);
+            if(entry.screen != null) {
+                this.client.setScreen(entry.screen);
+            } else {
+                super.setSelected(entry);
+                this.parentScreen.selectMenuItem(entry);
+            }
         }
+    }
+
+    /**
+     * Check if a {@link MinepediaMenuItem Menu Item} is selected
+     *
+     * @param index {@link Integer The list index}
+     * @return {@link Boolean True if the Menu Item is selected}
+     */
+    @Override
+    protected boolean isSelectedEntry(final int index) {
+        final MinepediaMenuItem selected =  this.getSelectedOrNull();
+        return selected != null && this.getEntry(index).getKey().equals(selected.getKey());
     }
 
     /**
@@ -88,7 +100,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      */
     @Override
     protected int getScrollbarPositionX() {
-        return this.width + 5;
+        return this.width;
     }
 
     /**
@@ -125,8 +137,12 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * Inner class for a {@link MinepediaMenuWidget Minepedia Menu Entry}
      */
     @Environment(EnvType.CLIENT)
-    public class MinepediaMenuItem extends AlwaysSelectedEntryListWidget.Entry<MinepediaMenuItem> {
+    public static class MinepediaMenuItem extends AlwaysSelectedEntryListWidget.Entry<MinepediaMenuItem> {
 
+        /**
+         * {@link MinepediaSection The entry section}
+         */
+        private final MinepediaSection section;
         /**
          * {@link String The entry key}
          */
@@ -143,50 +159,85 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          * {@link Boolean If the Entry represents an header}
          */
         private final boolean isHeader;
+        /**
+         * The {@link MinepediaMenuWidget parent Menu}
+         */
+        private MinepediaMenuWidget menu;
+        /**
+         * The {@link MinepediaScreen Screen} to open when selecting this item
+         */
+        private MinepediaScreen screen;
 
         /**
          * Constructor. Set the {@link String Entry Title}
          *
+         * @param section {@link MinepediaSection The Entry Section}
          * @param title {@link String The Entry Title}
          */
-        public MinepediaMenuItem(final String title) {
-            this(title, false, null);
+        public MinepediaMenuItem(final MinepediaSection section, final String title) {
+            this(section, title, false, null);
         }
 
         /**
          * Constructor. Set the {@link String Entry Title}
          *
+         * @param section {@link MinepediaSection The Entry Section}
          * @param title {@link String The Entry Title}
          * @param image {@link ImageData The Image data}
          */
-        public MinepediaMenuItem(final String title, final ImageData image) {
-            this(title, false, image);
+        public MinepediaMenuItem(final MinepediaSection section, final String title, final ImageData image) {
+            this(section, title, false, image);
         }
 
         /**
          * Constructor. Set the {@link String Entry Title} and if
          * the entry represents an header
          *
+         * @param section {@link MinepediaSection The Entry Section}
          * @param title {@link String The Entry Title}
          * @param isHeader {@link Boolean If the Entry represents an header}
          */
-        public MinepediaMenuItem(final String title, final boolean isHeader) {
-            this(title, isHeader, null);
+        public MinepediaMenuItem(final MinepediaSection section, final String title, final boolean isHeader) {
+            this(section, title, isHeader, null);
         }
 
         /**
          * Constructor. Set the {@link String Entry Title} and if
          * the entry represents an header
          *
+         * @param section {@link MinepediaSection The Entry Section}
          * @param title {@link String The Entry Title}
          * @param isHeader {@link Boolean If the Entry represents an header}
          * @param image {@link ImageData The Image data}
          */
-        public MinepediaMenuItem(final String title, final boolean isHeader, final ImageData image) {
+        public MinepediaMenuItem(final MinepediaSection section, final String title, final boolean isHeader, final ImageData image) {
+            this.section = section;
             this.key = title;
             this.text = title == null || title.isBlank() || title.isEmpty() ? Text.empty() : Text.translatable("menu." + Minepedia.MOD_ID + "." + (isHeader ? "header." : "") + title);
             this.isHeader = isHeader;
             this.image = image;
+        }
+
+        /**
+         * Set the {@link MinepediaMenuWidget parent menu}
+         *
+         * @param menu {@link MinepediaMenuWidget The parent menu}
+         * @return {@link MinepediaMenuItem The menu Item}
+         */
+        public MinepediaMenuItem setMenu(final MinepediaMenuWidget menu) {
+            this.menu = menu;
+            return this;
+        }
+
+        /**
+         * Set the {@link MinepediaScreen Screen to open when selecting this item}
+         *
+         * @param screen {@link MinepediaScreen The Screen to open when selecting this item}
+         * @return {@link MinepediaMenuItem The menu Item}
+         */
+        public MinepediaMenuItem setScreen(final MinepediaScreen screen) {
+            this.screen = screen;
+            return this;
         }
 
         /**
@@ -233,7 +284,12 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          */
         @Override
         public void render(final DrawContext context, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
-            context.drawTextWithShadow(MinepediaMenuWidget.this.client.textRenderer, this.getStyledText(), x + 5, y + 2, this.getTextColor());
+            if(this.menu != null) {
+                context.drawText(this.menu.client.textRenderer, this.getStyledText(), x + 5, y + 2, this.getTextColor(), false);
+                if(this.screen != null) {
+                    context.drawTexture(this.menu.ARROWS_TEXTURE, entryWidth - 5, y - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
+                }
+            }
         }
 
         /**
@@ -246,8 +302,20 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          */
         @Override
         public boolean mouseClicked(final double mouseX, final double mouseY, final int button) {
-            MinepediaMenuWidget.this.setSelected(this);
+            if(this.menu != null) {
+                this.menu.setSelected(this);
+                this.menu.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+            }
             return true;
+        }
+
+        /**
+         * Get the {@link MinepediaSection entry section}
+         *
+         * @return The {@link MinepediaSection entry section}
+         */
+        public MinepediaSection getSection() {
+            return this.section;
         }
 
         /**
@@ -294,9 +362,17 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     /**
      * The image positions
      */
-    enum ImagePosition {
+    public enum ImagePosition {
         START,
         END
+    }
+
+    /**
+     * {@link Minepedia Minepedia} sections
+     */
+    public enum MinepediaSection {
+        INDEX,
+        ENCYCLOPEDIA
     }
 
 }

@@ -23,17 +23,17 @@ But, for the most part, you should get a one-to-one match between the two versio
 
 You can access the Minepedia menu right from the main menu, using the newly added button right next to the Singleplayer button
 
-<p align="center"><img src=".github/docs/main_menu.png" alt="Minepedia logo" width="75%"></p>
+<p align="center"><img src=".github/docs/main_menu.png" alt="Minepedia on the main menu" width="75%"></p>
 
 or in-game using its own keybound (default to `K`)
 
-<p align="center"><img src=".github/docs/how_to_play.png" alt="Minepedia logo" width="75%"></p>
+<p align="center"><img src=".github/docs/how_to_play.png" alt="Minepedia: how to play" width="75%"></p>
 
 Clicking on a voice on the left will change the displayed details on the right.
 
-<p align="center"><img src=".github/docs/encyclopedia_nether_portal.png" alt="Minepedia logo" width="75%"></p>
-<p align="center"><img src=".github/docs/encyclopedia_difficulty.png" alt="Minepedia logo" width="75%"></p>
-<p align="center"><img src=".github/docs/encyclopedia_command_blocks.png" alt="Minepedia logo" width="75%"></p>
+<p align="center"><img src=".github/docs/encyclopedia_nether_portal.png" alt="Minepedia: Nether Portal" width="75%"></p>
+<p align="center"><img src=".github/docs/encyclopedia_difficulty.png" alt="Minepedia: Difficulty" width="75%"></p>
+<p align="center"><img src=".github/docs/encyclopedia_command_blocks.png" alt="Minepedia: Command Blocks" width="75%"></p>
 
 -------------------------
 

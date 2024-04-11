@@ -70,8 +70,9 @@ public class MinepediaEntryWidget extends ScrollableWidget {
         this.text.setPosition(OFFSET_X, textY);
         final MinepediaMenuWidget.ImageData image = this.entry.getImage();
         if(image != null && image.position().equals(MinepediaMenuWidget.ImagePosition.START)) {
-            this.text.setPosition(OFFSET_X, textY + (image.height() / 2));
+            this.text.setPosition(OFFSET_X, textY + (image.height() / 2) + image.imageOffset());
         }
+        this.setScrollY(0D);
     }
 
     /**
@@ -180,7 +181,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
         context.getMatrices().push();
         context.getMatrices().scale(IMAGE_SCALE_FACTOR, IMAGE_SCALE_FACTOR, IMAGE_SCALE_FACTOR);
         final int x = this.getX() + (this.getWidth() / 2) - (image.width() / 2) - OFFSET_X;
-        final int y = image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? 10 : this.getContentHeight(1);
+        final int y = image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? 7 : (image.imageOffset() > 0 ? this.text.getHeight() + image.imageOffset() : this.getContentHeight(1));
         drawTexture(context, image.getTexture(), x, y, 0, 0, image.width(), image.height(), 512, 512);
         context.getMatrices().pop();
     }
@@ -192,7 +193,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      */
     @Override
     protected int getContentsHeight() {
-        return getContentHeight(2);
+        return getContentHeight(1);
     }
 
     /**
@@ -204,7 +205,8 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     private int getContentHeight(final int multiplier) {
         final int textHeight = this.text.getHeight();
         if(this.entry != null && this.entry.getImage() != null) {
-            return textHeight + (int)((this.entry.getImage().height() * IMAGE_SCALE_FACTOR) * multiplier);
+            final MinepediaMenuWidget.ImageData imageData = this.entry.getImage();
+            return textHeight + (int)((imageData.height() * IMAGE_SCALE_FACTOR) * multiplier) + (imageData.imageOffset() / 3);
         }
         return textHeight;
     }

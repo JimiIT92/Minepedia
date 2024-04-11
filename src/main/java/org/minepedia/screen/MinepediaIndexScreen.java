@@ -1,5 +1,7 @@
 package org.minepedia.screen;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screen.Screen;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.widget.MinepediaMenuWidget;
@@ -7,6 +9,7 @@ import org.minepedia.screen.widget.MinepediaMenuWidget;
 /**
  * {@link Minepedia Minepedia} index screen
  */
+@Environment(EnvType.CLIENT)
 public final class MinepediaIndexScreen extends MinepediaScreen {
 
     /**
@@ -14,10 +17,11 @@ public final class MinepediaIndexScreen extends MinepediaScreen {
      */
     public MinepediaIndexScreen() {
         super(
+                "how_to_play",
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "getting_started", true),
-                new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "moving_around", new MinepediaMenuWidget.ImageData("moving_around", 512, 304, MinepediaMenuWidget.ImagePosition.END)),
+                new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "moving_around", new MinepediaMenuWidget.ImageData("moving_around", 512, 304, MinepediaMenuWidget.ImagePosition.END, 100)),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "gathering_resources"),
-                new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "selecting_items", new MinepediaMenuWidget.ImageData("selecting_items", 512, 272, MinepediaMenuWidget.ImagePosition.END)),
+                new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "selecting_items", new MinepediaMenuWidget.ImageData("selecting_items", 512, 272, MinepediaMenuWidget.ImagePosition.END, 130)),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "placing_blocks"),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "inventory", new MinepediaMenuWidget.ImageData("inventory", 512, 281, MinepediaMenuWidget.ImagePosition.START)),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "preparing_for_the_night", true),
@@ -35,7 +39,7 @@ public final class MinepediaIndexScreen extends MinepediaScreen {
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "beds"),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "improved_tools"),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "", true),
-                new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "encyclopedia").setScreen(new MinepediaEncyclopediaScreen())
+                new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "encyclopedia").setScreenSupplier(MinepediaEncyclopediaScreen::new)
         );
     }
 

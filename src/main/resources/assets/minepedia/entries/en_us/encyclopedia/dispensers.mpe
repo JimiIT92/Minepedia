@@ -1,0 +1,9 @@
+Dispensers are used to shoot out items. You will need to power each Dispenser with a redstone signal (for example, with a lever) to trigger it.
+
+To fill a Dispenser with items, press {{ctrl.use}} on the Dispenser, then move the items that you want to dispense from your inventory to the Dispenser.
+
+§8§l§nUsage§f§r
+
+Whenever you power a Dispenser, an item will shoot out.
+
+Dispensers can also be used to place items as well, such as Pumpkins on Iron Golems and equipment on Armor Stands.

@@ -117,6 +117,8 @@ public final class AssetUtils {
         rawEntryFile = rawEntryFile.replace("{{ctrl.attack}}", getKey(OPTIONS.attackKey));
         rawEntryFile = rawEntryFile.replace("{{ctrl.use}}", getKey(OPTIONS.useKey));
         rawEntryFile = rawEntryFile.replace("{{ctrl.inventory}}", getKey(OPTIONS.inventoryKey));
+        rawEntryFile = rawEntryFile.replace("{{ctrl.sneak}}", getKey(OPTIONS.sneakKey));
+        rawEntryFile = rawEntryFile.replace("{{ctrl.sprint}}", getKey(OPTIONS.sprintKey));
         rawEntryFile = rawEntryFile.replace("{{ctrl.hotbar.first}}", getKey(OPTIONS.hotbarKeys[0]));
         rawEntryFile = rawEntryFile.replace("{{ctrl.hotbar.last}}", getKey(OPTIONS.hotbarKeys[OPTIONS.hotbarKeys.length - 1]));
         return Text.translatable(rawEntryFile).getString();

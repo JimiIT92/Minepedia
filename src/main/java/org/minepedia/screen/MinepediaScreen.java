@@ -3,11 +3,15 @@ package org.minepedia.screen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.widget.MinepediaEntryWidget;
 import org.minepedia.screen.widget.MinepediaMenuWidget;
+
+import java.util.Arrays;
 
 /**
  * The main {@link Minepedia Minepedia} {@link Screen Screen}
@@ -24,7 +28,7 @@ public abstract class MinepediaScreen extends Screen {
      */
     private MinepediaMenuWidget menuWidget;
     /**
-     * The {@link MinepediaEntryWidget selected menu item text wdget}
+     * The {@link MinepediaEntryWidget selected menu item text widget}
      */
     private MinepediaEntryWidget textWidget;
     /**
@@ -35,10 +39,11 @@ public abstract class MinepediaScreen extends Screen {
     /**
      * Constructor. Set the {@link Screen Screen} {@link Text Title}
      *
+     * @param title {@link String The Screen title}
      * @param menuItems {@link MinepediaMenuWidget.MinepediaMenuItem The menu items}
      */
-    public MinepediaScreen(final MinepediaMenuWidget.MinepediaMenuItem... menuItems) {
-        super(Text.translatable("screen." + Minepedia.MOD_ID + ".title"));
+    public MinepediaScreen(final String title, final MinepediaMenuWidget.MinepediaMenuItem... menuItems) {
+        super(Text.translatable("screen." + Minepedia.MOD_ID + "." + title));
         this.menuItems = menuItems;
     }
 
@@ -51,8 +56,34 @@ public abstract class MinepediaScreen extends Screen {
         menuWidget = new MinepediaMenuWidget(this.client, this, menuOffsetX);
         menuWidget.init(this.menuItems);
         addDrawableChild(menuWidget);
-        textWidget = new MinepediaEntryWidget(menuOffsetX + menuWidget.getWidth(), MinepediaMenuWidget.WIDGET_Y, this.width - menuWidget.getWidth() - (menuOffsetX * 3), menuWidget.getHeight(), this.textRenderer);
+        textWidget = new MinepediaEntryWidget(menuOffsetX + menuWidget.getWidth(), MinepediaMenuWidget.WIDGET_Y, this.width - menuWidget.getWidth() - (menuOffsetX * 3) + menuOffsetX, menuWidget.getHeight(), this.textRenderer);
         addDrawableChild(textWidget);
+        if(this.menuItems != null && this.menuItems.length > 0 && this.selectedMenuItem == null) {
+            MinepediaMenuWidget.MinepediaMenuItem selectedItem = Arrays.stream(this.menuItems).filter(entry -> !entry.isHeader()).findFirst().orElse(this.menuItems[0]);
+            this.menuWidget.setSelected(selectedItem);
+            this.menuWidget.setFocused(selectedItem);
+            this.menuWidget.focusOn(selectedItem);
+        }
+    }
+
+    /**
+     * Render the {@link Screen Screen}
+     *
+     * @param context {@link DrawContext The Draw Context}
+     * @param mouseX {@link Integer The mouse X coordinate}
+     * @param mouseY {@link Integer The mouse Y coordinate}
+     * @param delta {@link Float The screen delta time}
+     */
+    @Override
+    public void render(final DrawContext context, final int mouseX, final int mouseY, final float delta) {
+        if(this.selectedMenuItem != null) {
+            final MutableText title = this.title.copy()
+                    .append(Text.literal(": "))
+                    .append(this.selectedMenuItem.getText());
+
+            context.drawCenteredTextWithShadow(this.textRenderer, title, this.width / 2, 4, 0xFFFFFF);
+        }
+        super.render(context, mouseX, mouseY, delta);
     }
 
     /**

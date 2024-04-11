@@ -1,0 +1,41 @@
+Structure Blocks give creators the ability yo copy and save out sections of their world into structures. Saved structures can then be pasted back into the world.
+
+§8§l§nHow to Obtain§f§r
+
+To get a Structure Block you must use the /give slash command. To use a Structure Block, you must have Operator permissions.
+
+§8§l§nModes§f§r
+
+Structure Blocks have 3 modes that can be switched between with the Mode button:
+Save, Load, and Corner.
+
+Save mode saves an area of the world a a structure.
+
+Load mode loads a structure into the world.
+Only structures saved to the world or included in a data pack that is applied to the world can be loaded.
+
+Corner mode is used with save mode's detect button to automatically set the area you want to save. See the Corner Mode section below for more details.
+
+§8§l§nRedstone Activation§f§r
+
+Redstone can be used to activate a Structure Block. This will cause it to either save a structure out or load a structure into the world, depending on the mode of the block and its settings.
+
+§8§l§nIntegrity and Seed§f§r
+
+You can change how much of a structure is loaded in by changing the values for Integrity and Seed.
+
+§eIntegrity§f - The percentage of blocks to load in from the structure, accepted values are 0 to 100. Blocks will be chosen randomly if a Seed is not specified.
+
+§eSeed§f - The value entered here will determine which blocks to remove when using Integrity. Leave this field blank if you want the blocks to be chosen randomly.
+
+§8§l§nStructure Void Blocks§f§r
+
+When a structure with Structure Void blocks is loaded into the world, any block that would have been removed where the structure void block is loading into, will instead stay in the world.
+
+Example: loading an empty shipwreck into the bottom of the ocean will normally copy air over the water blocks. If the shipwreck was filled with structure void, then the water will stay and you will have a shipwreck filled with water.
+
+§8§l§nDetect and Corner Mode§f§r
+
+To automatically select the area that you want to save, you can place Corner Mode blocks around your structure and name them with the same name as the structure you want to save.
+
+Pressing the Detect button in Save mode will find all of the Corner Blocks with the same name and create a selection area so that is will save everything inside of the volume those Corner Blocks make.

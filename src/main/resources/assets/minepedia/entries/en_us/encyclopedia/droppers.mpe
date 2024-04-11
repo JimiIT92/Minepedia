@@ -1,0 +1,5 @@
+When powered by Redstone, Droppers will drop a single random item contained within. Press {{ctrl.use}} on the Dropper to open it and then you can load it with items from your inventory.
+
+§8§l§nUsage§f§r
+
+If a Dropper is facing a Chest or another type of container, the item will be placed into that instead. Long chains of Droppers can be constructed to transport items over a distance.

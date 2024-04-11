@@ -1,0 +1,10 @@
+Hoppers are used to automatically move items.
+Hoppers can be attached to some other items like containers such as Chests or Jukeboxes.
+
+Hoppers will continuously remove items out of a container placed above them and move them into the container they are pointing to.
+
+§8§l§nUsage§f§r
+
+To make a Hopper point to a particular block, place the Hopper against that block while sneaking.
+
+If a Hopper is powered by Redstone, it will become inactive and stop moving items.

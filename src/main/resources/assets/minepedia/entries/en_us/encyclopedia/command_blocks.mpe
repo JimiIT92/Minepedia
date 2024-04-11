@@ -1,0 +1,27 @@
+Command Blocks are a powerful tool for map creators. They store and execute commands upon receiving a Redstone signal.
+
+To get a command block you must use /give.
+
+When a Command Block has either executed or failed to execute its stored command, it sends a Redstone signal from the side where the arrow is pointing.
+
+§eBlock Type§f - There are three types of Command Blocks, each with their own color and behaviour:
+
+    §eImpulse§f - Only executes the stored command when the block receives a redstone signal.
+
+    §eChain§f - Executes the stored command when the Command Block behind it has or has not executed its command.
+
+    §eRepeat§f - Once activated, this Command Block will continue executing its stored command as long as it exists.
+
+§eCondition§f - There are two conditions, each will affect the behaviour of the Command Block:
+
+    §eUnconditional§f - Executes the stored command even if the Command Block behind it failed to execute its command.
+
+    §eConditional§f - Only executes the stored command if the Command Block behind it succeeded in executing its command.
+
+§eRedstone§f - There are two redstone settings, each will affect the behaviour of the Command Block:
+
+    §eNeeds Redstone§f - Requires a redstone signal to activate.
+
+    §eAlways Active§f - Does not require a redstone signal to activate.
+
+A Command Block will also show you its previous output. This will help you figure out if a Command Block failed to execute its command and why.

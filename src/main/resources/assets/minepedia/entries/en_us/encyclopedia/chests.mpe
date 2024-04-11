@@ -1,0 +1,5 @@
+Once you have crafted a Chest, you can place it in the world and then open it with {{ctrl.use}} to store items from your inventory.
+
+Items in the Chest will be stored there for you to put into your inventory later.
+
+Two Chests placed next to each other will be combined to form a Large Chest.

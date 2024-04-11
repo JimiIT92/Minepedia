@@ -1,0 +1,38 @@
+When creating a world, you have many options. Below are the various settings that can be used to fine tune your experience.
+Don't worry if you didn't set them when you created the world, they can be changed at any time.
+
+§eWorld Name§f: This is where you can name your world.
+
+§eDefault Game Mode§f: This is the gamemode that all new players to the world will start with.
+You can have players start in either survival or creative mode. Selecting creative mode will turn cheats on.
+
+§eDifficulty§f: This setting affects how difficult the world will be. You can choose Peaceful, Easy, Normal or Hard.
+
+§8§l§nWorld Preferences§f§r
+
+§eBonus Chest§f: If this setting is turned on, there will be a chest with some starting loot near your initial spawn location.
+
+§eWorld Type§f: This setting controls the way the world is created. Select Infinite or Flat from the menu to change the world type.
+    §eInfinite worlds§f go on and on forever.
+    §eFlat worlds§f do not have any hills or trees, just an infinite flat area to fill with your creations.
+
+§eSeed§f: This is a unique number for the world.
+By entering a seed when you make a new world, you can control how it is created. You can also use a word or phrase for the seed and the game will convert it to a number for you.
+
+§8§l§nCheats and Gamerules§f§r
+
+§eActivate Cheats§f: This setting allows players to use commands.
+
+Below are gamerules.
+
+§eDo Daylight Cycle§f: The time will not advance when this setting is turned off.
+
+§eKeep Inventory§f: This setting allows players to keep their inventory when they die.
+
+§eMob Spawning§f: This prevents all mobs from spawning when this setting is off.
+
+§eMob Griefing§f: Prevents mobs from destroying the world.
+
+§eEntities Drop Loot§f: Controls whether things like minecarts and armor stands will drop themselves when they are broken.
+
+§eWeather Cycle§f: The weather will not change when this setting is turned off.

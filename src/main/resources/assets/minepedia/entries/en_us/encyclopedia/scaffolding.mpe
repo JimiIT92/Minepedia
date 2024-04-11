@@ -1,0 +1,8 @@
+§8§l§nReach for the Sky§f§r
+
+Scaffolding can help you create huge structures safely! You can walk inside scaffolding and stand on it. If you have a column of scaffolding you can go upwards by standing in the scaffolding and pressing {{ctrl.jump}}. If you want to travel downwards, you can press {{ctrl.sneak}}
+
+§8§l§nSupport Your Build§f§r
+
+Scaffolding needs support. You can only place so many scaffolding horizontally without touching a different block. When you attempt to place too many scaffolding blocks without proper support, it will fall.
+Scaffolding can be placed like normal blocks, but it can also be placed on its own foundation to quickly build a tall tower.

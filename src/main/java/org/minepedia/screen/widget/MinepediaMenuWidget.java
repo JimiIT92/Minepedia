@@ -11,11 +11,14 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaScreen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * {@link Minepedia Minepedia} menu list widget
@@ -39,6 +42,18 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * {@link Integer The Widget Y coordinate}
      */
     public static final int WIDGET_Y = WIDGET_Y_OFFSET / 2 + (WIDGET_Y_OFFSET / 4);
+    /**
+     * The {@link ArrayList<MinepediaMenuItem> Entries list}
+     */
+    private final ArrayList<MinepediaMenuItem> entries;
+    /**
+     * {@link Boolean Wether the player is selecting entries upwards with the arrow keys}
+     */
+    private boolean isSelectingUpwards;
+    /**
+     * {@link Boolean Wether the click sound should be played when an header is clicked}
+     */
+    private boolean shouldPlayClickHeaderSound;
 
     /**
      * Constructor. Set the widget properties
@@ -51,6 +66,9 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.currentScreen).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
         this.setPosition(x, WIDGET_Y);
         this.parentScreen = parentScreen;
+        this.entries = new ArrayList<>();
+        this.isSelectingUpwards = false;
+        this.shouldPlayClickHeaderSound = true;
     }
 
     /**
@@ -71,14 +89,34 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      */
     @Override
     public void setSelected(final @Nullable MinepediaMenuItem entry) {
-        if (entry != null && !entry.isHeader) {
-            if(entry.screen != null) {
-                this.client.setScreen(entry.screen);
+        if (entry != null) {
+            if(!entry.isHeader) {
+                if(entry.screenSupplier != null) {
+                    this.client.setScreen(entry.screenSupplier.get());
+                } else {
+                    super.setSelected(entry);
+                    this.parentScreen.selectMenuItem(entry);
+                }
             } else {
-                super.setSelected(entry);
-                this.parentScreen.selectMenuItem(entry);
+                 final int index = Math.max(1, Math.min(this.entries.indexOf(entry) + (isSelectingUpwards ? -1 : 1), this.entries.size() - 1));
+                 this.setSelected(this.getEntry(index));
+                 if(this.shouldPlayClickHeaderSound) {
+                     this.playClickSound();
+                 }
             }
         }
+    }
+
+    /**
+     * Add an {@link MinepediaMenuItem entry}
+     *
+     * @param entry The {@link MinepediaMenuItem Menu Entry}
+     * @return The {@link Integer Entries count}
+     */
+    @Override
+    protected int addEntry(final MinepediaMenuItem entry) {
+        entries.add(entry);
+        return super.addEntry(entry);
     }
 
     /**
@@ -101,6 +139,13 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     @Override
     protected int getScrollbarPositionX() {
         return this.width;
+    }
+
+    /**
+     * Play the {@link SoundEvents#UI_BUTTON_CLICK Click Sound}
+     */
+    private void playClickSound() {
+        this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
     }
 
     /**
@@ -134,6 +179,24 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     }
 
     /**
+     * Check if a key is pressed
+     *
+     * @param keyCode {@link Integer The key code}
+     * @param scanCode {@link Integer The key scan code}
+     * @param modifiers {@link Integer The key modifiers}
+     * @return {@link Boolean True if the key has been pressed}
+     */
+    @Override
+    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers) {
+        if(keyCode != GLFW.GLFW_KEY_UP && keyCode != GLFW.GLFW_KEY_DOWN) {
+            return true;
+        }
+        this.isSelectingUpwards = GLFW.GLFW_KEY_UP == keyCode;
+        this.shouldPlayClickHeaderSound = false;
+        return super.keyReleased(keyCode, scanCode, modifiers);
+    }
+
+    /**
      * Inner class for a {@link MinepediaMenuWidget Minepedia Menu Entry}
      */
     @Environment(EnvType.CLIENT)
@@ -164,9 +227,9 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          */
         private MinepediaMenuWidget menu;
         /**
-         * The {@link MinepediaScreen Screen} to open when selecting this item
+         * The {@link Supplier<MinepediaScreen> Supplier for the Screen} to open when selecting this item
          */
-        private MinepediaScreen screen;
+        private Supplier<MinepediaScreen> screenSupplier;
 
         /**
          * Constructor. Set the {@link String Entry Title}
@@ -232,11 +295,11 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         /**
          * Set the {@link MinepediaScreen Screen to open when selecting this item}
          *
-         * @param screen {@link MinepediaScreen The Screen to open when selecting this item}
+         * @param screenSupplier {@link MinepediaScreen The Screen to open when selecting this item}
          * @return {@link MinepediaMenuItem The menu Item}
          */
-        public MinepediaMenuItem setScreen(final MinepediaScreen screen) {
-            this.screen = screen;
+        public MinepediaMenuItem setScreenSupplier(final Supplier<MinepediaScreen> screenSupplier) {
+            this.screenSupplier = screenSupplier;
             return this;
         }
 
@@ -269,6 +332,24 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         }
 
         /**
+         * Get if the entry is an header
+         *
+         * @return {@link Boolean If the Entry represents an header}
+         */
+        public boolean isHeader() {
+            return this.isHeader;
+        }
+
+        /**
+         * Get the entry {@link Text text}
+         *
+         * @return {@link Text The entry text}
+         */
+        public Text getText() {
+            return this.text;
+        }
+
+        /**
          * Render a menu entry
          *
          * @param context {@link DrawContext The Draw Context}
@@ -286,7 +367,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         public void render(final DrawContext context, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
             if(this.menu != null) {
                 context.drawText(this.menu.client.textRenderer, this.getStyledText(), x + 5, y + 2, this.getTextColor(), false);
-                if(this.screen != null) {
+                if(this.screenSupplier != null) {
                     context.drawTexture(this.menu.ARROWS_TEXTURE, entryWidth - 5, y - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
                 }
             }
@@ -303,8 +384,12 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         @Override
         public boolean mouseClicked(final double mouseX, final double mouseY, final int button) {
             if(this.menu != null) {
+                this.menu.isSelectingUpwards = false;
+                this.menu.shouldPlayClickHeaderSound = true;
                 this.menu.setSelected(this);
-                this.menu.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                if(!this.isHeader) {
+                    this.menu.playClickSound();
+                }
             }
             return true;
         }
@@ -345,8 +430,22 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * @param width {@link Integer The image width}
      * @param height {@link Integer The image height}
      * @param position {@link ImagePosition The image position}
+     * @param imageOffset {@link Integer The image offset}
      */
-    public record ImageData(String name, int width, int height, ImagePosition position) {
+    @Environment(EnvType.CLIENT)
+    public record ImageData(String name, int width, int height, ImagePosition position, int imageOffset) {
+
+        /**
+         * Record constructor
+         *
+         * @param name {@link String The image name}
+         * @param width {@link Integer The image width}
+         * @param height {@link Integer The image height}
+         * @param position {@link ImagePosition The image position}
+         */
+        public ImageData(final String name, final int width, final int height, final ImagePosition position) {
+            this(name, width, height, position, 0);
+        }
 
         /**
          * Get the {@link Identifier texture identifier}
@@ -362,6 +461,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     /**
      * The image positions
      */
+    @Environment(EnvType.CLIENT)
     public enum ImagePosition {
         START,
         END
@@ -370,6 +470,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     /**
      * {@link Minepedia Minepedia} sections
      */
+    @Environment(EnvType.CLIENT)
     public enum MinepediaSection {
         INDEX,
         ENCYCLOPEDIA

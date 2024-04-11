@@ -5,7 +5,7 @@
 [![](http://cf.way2muchnoise.eu/full_995733_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/minepedia)
 [![](https://img.shields.io/modrinth/dt/TL9TUXua?logo=modrinth&label=Modrinth&color=darkgreen)](https://modrinth.com/mod/minepedia)
 
-Minepedia brings the Minecraft: Bedrock Edition "How to play" menu into Java Edition!
+Minepedia is a client-side only Fabric mod that brings the Minecraft: Bedrock Edition "How to play" menu into Java Edition!
 
 -------------------------
 
@@ -35,6 +35,8 @@ Clicking on a voice on the left will change the displayed details on the right.
 <p align="center"><img src=".github/docs/encyclopedia_difficulty.png" alt="Minepedia logo" width="75%"></p>
 <p align="center"><img src=".github/docs/encyclopedia_command_blocks.png" alt="Minepedia logo" width="75%"></p>
 
+-------------------------
+
 ### 📜 Updates
 
 Minepedia will get updated when the Bedrock Edition "How to play" menu gets updated with new major releases.
@@ -42,6 +44,13 @@ Minepedia will get updated when the Bedrock Edition "How to play" menu gets upda
 Right now every entry is "hardcoded" into the mod, but future projects include:
     - Exposing some APIs or some ways to make other mods integrate inside the Minepedia menu
     - Integrate the [Minecraft wiki](https://minecraft.wiki) to display info about blocks, items and more
+
+-------------------------
+
+### ⚙ Requirements
+
+Minepedia is a client-side only mod, meaning that you can even use it while playing on your favorite server,
+either vanilla ones or modded ones.
 
 -------------------------
 

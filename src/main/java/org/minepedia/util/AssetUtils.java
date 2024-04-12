@@ -2,19 +2,18 @@ package org.minepedia.util;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.ModContainer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.widget.MinepediaMenuWidget;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Locale;
-import java.util.Optional;
 
 /**
  * Utility methods for getting Assets
@@ -28,22 +27,13 @@ public final class AssetUtils {
     private static final GameOptions OPTIONS = MinecraftClient.getInstance().options;
 
     /**
-     * Get the {@link ModContainer Mod Container}
+     * Get an {@link Identifier asset Identifier}
      *
-     * @return The {@link Optional<ModContainer> Mod Container}
+     * @param asset {@link String The asset Identifier}
+     * @return The {@link Identifier asset Identifier, if any}
      */
-    public static Optional<ModContainer> getModContainer() {
-        return FabricLoader.getInstance().getModContainer(Minepedia.MOD_ID);
-    }
-
-    /**
-     * Get an {@link Path asset}
-     *
-     * @param path {@link String The asset path}
-     * @return The {@link Optional<Path> asset path, if any}
-     */
-    public static Optional<Path> getAsset(final String path) {
-        return getModContainer().flatMap(modContainer -> modContainer.findPath("assets/" + Minepedia.MOD_ID + "/" + path));
+    public static Identifier getAsset(final String asset) {
+        return new Identifier(Minepedia.MOD_ID, asset);
     }
 
     /**
@@ -54,52 +44,50 @@ public final class AssetUtils {
      * @return {@link String The entry file text}
      */
     public static String readEntry(final MinepediaMenuWidget.MinepediaSection section, final String entryTitle) {
-        return getEntry(section, entryTitle).map(AssetUtils::readEntryFile).orElse("");
+        final Identifier assetIdentifier = getEntry(section, entryTitle);
+        return readEntryFile(assetIdentifier);
     }
 
     /**
-     * Get a {@link Minepedia Minepedia entry file path}
+     * Get a {@link Minepedia Minepedia entry file Identifier}
      *
      * @param section {@link MinepediaMenuWidget.MinepediaSection The entry section}
      * @param entryTitle {@link String The entry title}
-     * @return The {@link Optional<Path> Entry file path, if any}
+     * @return The {@link Identifier Entry file Identifier, if any}
      */
-    private static Optional<Path> getEntry(final MinepediaMenuWidget.MinepediaSection section, final String entryTitle) {
+    private static Identifier getEntry(final MinepediaMenuWidget.MinepediaSection section, final String entryTitle) {
         return getAsset("entries/" + OPTIONS.language.toLowerCase(Locale.ROOT) + "/" + section.name().toLowerCase(Locale.ROOT) + "/" + entryTitle + ".mpe");
     }
 
     /**
      * Read a {@link Path text file}
      *
-     * @param filePath {@link Path The file path}
+     * @param fileIdentifier {@link Identifier The file identifier}
      * @return {@link String The file text}
      */
-    private static String readFile(final Path filePath) {
+    private static String readFile(final Identifier fileIdentifier) {
+        final StringBuilder resultStringBuilder = new StringBuilder();
         try {
-            InputStream inputStream = new FileInputStream(filePath.toFile());
-            StringBuilder resultStringBuilder = new StringBuilder();
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+            try (final BufferedReader reader = MinecraftClient.getInstance().getResourceManager().openAsReader(fileIdentifier)) {
                 String line;
-                while ((line = br.readLine()) != null) {
+                while ((line = reader.readLine()) != null) {
                     resultStringBuilder.append(line).append("\n");
                 }
-            } catch (IOException e) {
-                return "";
             }
-            return resultStringBuilder.toString();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             return "";
         }
+        return resultStringBuilder.toString();
     }
 
     /**
      * Read a {@link Minepedia Minepedia entry file}
      *
-     * @param path {@link Path The entry file path}
+     * @param identifier {@link Identifier The entry file Identifier}
      * @return {@link String The entry text}
      */
-    private static String readEntryFile(final Path path) {
-        return replacePlaceholderEntryValues(readFile(path));
+    private static String readEntryFile(final Identifier identifier) {
+        return replacePlaceholderEntryValues(readFile(identifier));
     }
 
     /**

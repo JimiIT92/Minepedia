@@ -110,7 +110,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      */
     private void renderBackground(final DrawContext context) {
         context.setShaderColor(0.125f, 0.125f, 0.125f, 1.0f);
-        drawTexture(context, Screen.OPTIONS_BACKGROUND_TEXTURE, this.getX(), this.getY(), this.getRight(), this.getBottom(), this.width, this.height,32, 32);
+        drawTexture(context, Screen.MENU_BACKGROUND_TEXTURE, this.getX(), this.getY(), this.getRight(), this.getBottom(), this.width, this.height,32, 32);
         context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
@@ -181,7 +181,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
         context.getMatrices().push();
         context.getMatrices().scale(IMAGE_SCALE_FACTOR, IMAGE_SCALE_FACTOR, IMAGE_SCALE_FACTOR);
         final int x = this.getX() + (this.getWidth() / 2) - (image.width() / 2) - OFFSET_X;
-        final int y = image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? 7 : (image.imageOffset() > 0 ? this.text.getHeight() + image.imageOffset() : this.getContentHeight(1));
+        final int y = image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? 7 : (image.imageOffset() > 0 ? this.text.getHeight() + image.imageOffset() : this.getContentHeight());
         drawTexture(context, image.getTexture(), x, y, 0, 0, image.width(), image.height(), 512, 512);
         context.getMatrices().pop();
     }
@@ -193,20 +193,19 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      */
     @Override
     protected int getContentsHeight() {
-        return getContentHeight(1);
+        return getContentHeight();
     }
 
     /**
      * Get the total {@link Integer height} of contents
      *
-     * @param multiplier {@link Integer The multiplier factor for images}
      * @return {@link Integer The height contents}
      */
-    private int getContentHeight(final int multiplier) {
+    private int getContentHeight() {
         final int textHeight = this.text.getHeight();
         if(this.entry != null && this.entry.getImage() != null) {
             final MinepediaMenuWidget.ImageData imageData = this.entry.getImage();
-            return textHeight + (int)((imageData.height() * IMAGE_SCALE_FACTOR) * multiplier) + (imageData.imageOffset() / 3);
+            return textHeight + (int)(imageData.height() * IMAGE_SCALE_FACTOR) + (imageData.imageOffset() / 3);
         }
         return textHeight;
     }

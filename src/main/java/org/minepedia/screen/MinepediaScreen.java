@@ -62,7 +62,7 @@ public abstract class MinepediaScreen extends Screen {
             MinepediaMenuWidget.MinepediaMenuItem selectedItem = Arrays.stream(this.menuItems).filter(entry -> !entry.isHeader()).findFirst().orElse(this.menuItems[0]);
             this.menuWidget.setSelected(selectedItem);
             this.menuWidget.setFocused(selectedItem);
-            this.menuWidget.focusOn(selectedItem);
+            this.menuWidget.setFocused(selectedItem);
         }
     }
 

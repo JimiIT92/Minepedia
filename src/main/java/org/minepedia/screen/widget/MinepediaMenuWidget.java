@@ -137,7 +137,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * @return The {@link Integer Scrollbar X coordinate}
      */
     @Override
-    protected int getScrollbarPositionX() {
+    protected int getScrollbarX() {
         return this.width;
     }
 

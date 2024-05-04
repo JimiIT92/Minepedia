@@ -1,0 +1,70 @@
+{
+  "servercountryflags.locationInfo.unknown": "(sconosciuto)",
+  "servercountryflags.locationInfo.cooldown": "(API in ricarica)",
+  "servercountryflags.locationInfo.distance": "distante ≈ %d %s",
+  "servercountryflags.locationInfo.km": "km",
+  "servercountryflags.locationInfo.mi": "mi",
+  "servercountryflags.locationInfo.isp": "ISP: %s",
+  "servercountryflags.servermap.title": "Mappa del server",
+  "servercountryflags.servermap.home": "Tu sei qui!",
+
+  "servercountryflags.config.category.border": "Bordo",
+  "servercountryflags.config.category.preferences": "Preferenze",
+  "servercountryflags.config.category.locale": "Locale",
+
+  "servercountryflags.config.header": "Configurazione delle bandiere nazionali del server",
+
+  "servercountryflags.config.field.flagPosition.name": "Posizione bandiera",
+  "servercountryflags.config.field.flagPosition.description": "Gestisci la posizione della bandiera. Opzioni disponibili: sinistra, destra, dietro il nome, in basso a destra, tooltipServerName, tooltipPing",
+  "servercountryflags.config.field.flagPosition.value.behindName": "Dietro il nome",
+  "servercountryflags.config.field.flagPosition.value.left": "Sinistra",
+  "servercountryflags.config.field.flagPosition.value.right": "Destra",
+  "servercountryflags.config.field.flagPosition.value.bottomRight": "In basso a destra",
+  "servercountryflags.config.field.flagPosition.value.tooltipServerName": "Tooltip (nome del server)",
+  "servercountryflags.config.field.flagPosition.value.tooltipPing": "Tooltip (ping)",
+
+  "servercountryflags.config.field.flagBorder.name": "Bordo della bandiera",
+  "servercountryflags.config.field.flagBorder.description": "Mostra il bordo intorno alle bandiere",
+
+  "servercountryflags.config.field.borderColor.name": "Colore del bordo",
+  "servercountryflags.config.field.borderColor.description": "Colore del bordo intorno alle bandiere",
+
+  "servercountryflags.config.field.reloadOnRefresh.name": "Ricarica o aggiorna",
+  "servercountryflags.config.field.reloadOnRefresh.description": "Forza il ricaricamento della bandiera quando l'elenco dei server viene aggiornato",
+
+  "servercountryflags.config.field.showDistance.name": "Mostra distanza",
+  "servercountryflags.config.field.showDistance.description": "Mostra la distanza approssimativa tra il server e l'utente quando si passa il mouse su una bandiera",
+
+  "servercountryflags.config.field.useKm.name": "Usa sistema chilometrico",
+  "servercountryflags.config.field.useKm.description": "Utilizza i chilometri invece delle miglia",
+
+  "servercountryflags.config.field.forceEnglish.name": "Forza inglese",
+  "servercountryflags.config.field.forceEnglish.description": "Impone che i risultati dell'API siano in inglese invece che nella lingua del gioco",
+
+  "servercountryflags.config.field.displayUnknownFlag.name": "Visualizzaza la bandiera sconosciuta",
+  "servercountryflags.config.field.displayUnknownFlag.description": "Mostra la bandiera sconosciuta quando non si hanno ancora dati sul server",
+
+  "servercountryflags.config.field.displayCooldownFlag.name": "Visualizza la bandiera in aggiornamento",
+  "servercountryflags.config.field.displayCooldownFlag.description": "Mostra una bandiera priovvisoria quando le API sono in aggiornamento",
+
+  "servercountryflags.config.field.showDistrict.name": "Mostra distretto",
+  "servercountryflags.config.field.showDistrict.description": "Mostra anche il distretto di ubicazione, se disponibile",
+
+  "servercountryflags.config.field.showISP.name": "Mostra ISP",
+  "servercountryflags.config.field.showISP.description": "Mostra l'ISP dell'host, se disponibile",
+
+  "servercountryflags.config.field.mapButton.name": "Pulsante mappa",
+  "servercountryflags.config.field.mapButton.description": "Mostra un pulsante nell'elenco dei server che apre la mappa del server",
+
+  "servercountryflags.config.field.mapButtonRight.name": "Pulsante mappa sul lato destro",
+  "servercountryflags.config.field.mapButtonRight.description": "Decide se il pulsante della mappa deve essere a destra o a sinistra",
+
+  "servercountryflags.config.field.showHomeOnMap.name": "Mostra dove ci si trova sulla mappa",
+  "servercountryflags.config.field.showHomeOnMap.description": "Mostra la vostra posizione anche sulla mappa del server",
+
+  "servercountryflags.config.field.resolveRedirects.name": "Risolvere i reindirizzamenti SRV",
+  "servercountryflags.config.field.resolveRedirects.description": "Utilizza l'IP reindirizzato (se presente) invece del solo IP risolto",
+
+  "servercountryflags.config.field.serverBrowserIntegration.name": "Integrazione del browser del server",
+  "servercountryflags.config.field.serverBrowserIntegration.description": "Visualizza le bandiere nel browser del server, se la mod è installata"
+}

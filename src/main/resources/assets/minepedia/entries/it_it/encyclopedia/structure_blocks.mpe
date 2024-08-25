@@ -1,0 +1,41 @@
+I blocchi Struttura permettono ai creatori di copiare o salvare delle sezioni del loro mondo sotto forma di struttura. Le strutture salvate possono poi essere incollate nuovamente nel mondo.
+
+§8§l§nCome ottenerli§f§r
+
+Per ottenere un blocco Struttura devi usare il comando /give. Per usare un blocco Struttura devi possedere i permessi da Operatore.
+
+§8§l§nModalità§f§r
+
+I blocchi Struttura hanno 4 modalità che possono essere cambiate con il menu a discesa Modalità:
+Salvataggio, Caricamento, e Angolo.
+
+La modalità Salvataggio salva un'area del mondo sotto forma di struttura.
+
+La modalità Caricamento carica una struttura nel mondo.
+È possibile caricare solamente le strutture salvate nel mondo o incluse in un pacchetto di comportamenti applicato al mondo.
+
+La modalità Angolo viene utilizzata con il pulsante Rileva in modalità Salvataggio per definire l'area da salvare. Per ulteriori dettagli, consulta di seguito la sezione Modalità Angolo.
+
+§8§l§nAttivazione pietrarossa§f§r
+
+La pietrarossa può essere usata per attivare un blocco Struttura. In questo modo verrà salvata dal mondo, oppure ne verrà caricata una al suo interno, a seconda della modalità del blocco delle impostazioni selezionate.
+
+§8§l§nIntegrità e seme§f§r
+
+Puoi cambiare la quantità di struttura che viene caricata cambiando i valori di integrità e seme.
+
+§eIntegrità§f - La percentuale dei blocchi da caricare da una struttura. Sono accettati valori da 0 a 100. I blocchi verranno scelti casualmente se non viene specificato un seme.
+
+§eSeme§f - Il valore inserito qui determinerà quali blocchi verranno rimossi quando si usa l'integrità. Lascia vuoto questo campo se vuoi che i blocchi vengano scelti casualmente.
+
+§8§l§nBlocchi Struttura vuoti§f§r
+
+Quando una struttura con dei blocchi Struttura vuoti viene caricata in un mondo, non verranno rimossi i blocchi originali del mondo in corrispondenza dei blocchi Struttura vuoti.
+
+Per esempio: caricare un relitto vuoto sul fondo dell'oceano normalmente copia l'aria, sostituendola ai blocchi d'acqua. Se il relitto venisse riempito di blocchi Struttura vuoti, allora l'acqua resterebbe dov'è e avresti un relitto pieno d'acqua.
+
+§8§l§nModalità Angolo e Rileva§f§r
+
+Per selezionare automaticamente l'area da salvare, posiziona i blocchi della modalità Angolo intorno alla tua struttura e nominali con lo stesso nome della struttura che vuoi salvare.
+
+Premendo il pulsante Rileva in modalità Salvataggio verranno rilevati tutti i blocchi Angolo con lo stesso nome creando così un'area di selezione per salvare tutto ciò che è all'interno del volume creato dai blocchi Angolo.

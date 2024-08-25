@@ -33,7 +33,7 @@ public final class AssetUtils {
      * @return The {@link Identifier asset Identifier, if any}
      */
     public static Identifier getAsset(final String asset) {
-        return new Identifier(Minepedia.MOD_ID, asset);
+        return Identifier.of(Minepedia.MOD_ID, asset);
     }
 
     /**
@@ -119,7 +119,7 @@ public final class AssetUtils {
      * @return The {@link String translated bound key}
      */
     private static String getKey(final KeyBinding keyBinding) {
-        return keyBinding.getBoundKeyLocalizedText().getString();
+        return keyBinding.getBoundKeyLocalizedText().getString().toUpperCase(Locale.ROOT);
     }
 
 }

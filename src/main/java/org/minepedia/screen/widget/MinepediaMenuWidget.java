@@ -29,7 +29,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     /**
      * The {@link Identifier GUI Arrows Texture Identifier}
      */
-    private final Identifier ARROWS_TEXTURE = new Identifier(Minepedia.MOD_ID, "textures/gui/arrows.png");
+    private final Identifier ARROWS_TEXTURE = Identifier.of(Minepedia.MOD_ID, "textures/gui/arrows.png");
     /**
      * {@link MinepediaScreen The Minepedia main screen}
      */
@@ -453,7 +453,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          * @return The {@link Identifier texture identifier}
          */
         public Identifier getTexture() {
-            return new Identifier(Minepedia.MOD_ID, "entries/images/" + name + ".png");
+            return Identifier.of(Minepedia.MOD_ID, "entries/images/" + name + ".png");
         }
 
     }

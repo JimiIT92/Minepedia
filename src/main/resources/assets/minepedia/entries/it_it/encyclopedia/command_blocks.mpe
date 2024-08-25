@@ -1,0 +1,27 @@
+I blocchi di comando sono potenti strumenti per i creatori di mappe. Contengono ed eseguono i comandi quando ricevono un segnale di pietrarossa.
+
+Per ottenere un blocco di comando dei usare /give.
+
+Quando un blocco di comando ha eseguito o fallito il comando contenuto, invia un segnale di pietrarossa dal lato indicato dalla freccia.
+
+§eTipi di blocco§f - Esistono tre tipi di blocchi di comando, ciascuno con un colore e un comportamento particolari:
+
+    §eImpulso§f - esegue il comando memorizzato solo quando il blocco riceve un segnale di pietrarossa.
+
+    §eCatena§f - esegue il comando memorizzato quando il blocco di comando dietro di esso ha oppure non ha eseguito il proprio comando.
+
+    §eRipetizione§f - una volta attivato, questo blocco di comando continua a eseguire il comando memorizzato finchè non cessa di esistere.
+
+§eCondizione§f - Esistono due condizioni, ciascuna delle quali influenza il comportamento del blocco di comando:
+
+    §eIncondizionato§f - esegue il comando memorizzato anche se il blocco di comando dietro di esso non ha eseguito il proprio.
+
+    §eCondizionato§f - esegue il comando memorizzato solo se il blocco di comando dietro di esso ha eseguito correttamente il proprio.
+
+§ePietrarossa§f - Esistono due impostazioni per la pietrarossa, ciascuna delle quali influenza il comportamento del blocco di comando:
+
+    §ePietrarossa necessaria§f - l'attivazione richiede un segnale di pietrarossa.
+
+    §eSempre attiva§f - l'attivazione non richiede un segnale di pietrarossa.
+
+Un blocco di comando ti mostrerà anche l'esito dell'ultima azione, aiutandoti così a capire se non è riuscito a eseguire il proprio comando e perchè.

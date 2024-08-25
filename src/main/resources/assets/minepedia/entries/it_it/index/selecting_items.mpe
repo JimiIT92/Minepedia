@@ -1,0 +1,8 @@
+Le risorse che raccogli appariranno nella tua §ehotbar§f, che puoi trovare nella parte inferiore dello schermo.
+
+Per tenere un oggetto in mano, scorri la rotellina del mouse per selezionarlo o usa un tasto numerico: {{ctrl.hotbar.first}}
+è il primo slot della hotbar e {{ctrl.hotbar.last}} è l'ultimo.
+
+Alcuni oggetti, come secchi, canne da pesca e archi, possono essere utilizzati toccando il pulsante costruisci/usa {{ctrl.use}}.
+
+§8§l§n1. Hotbar§f§r

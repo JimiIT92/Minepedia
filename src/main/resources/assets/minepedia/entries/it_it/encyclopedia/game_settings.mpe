@@ -1,0 +1,38 @@
+Quando crei un mondo, hai molte opzioni a disposizione. Di seguito trovi alcune impostazioni utilizzabili per mettere a punto la tua esperienza di gioco.
+Non preoccuparti se non le hai impostate quando hai creato il tuo mondo, perchè potrai cambiarle quando vuoi.
+
+§eNome del mondo§f: è l'opzione che ti consente di dare un nome al tuo mondo.
+
+§eModalità di gioco predefinita§f: è la modalità nella quale inizieranno tutti i nuovi giocatori nel mondo.
+Puoi fare in modo che comincino in modalità Sopravvivenza o in modalità Creativa. Selezionando la modalità Creativa verranno attivati i trucchi.
+
+§eDifficoltà§f: questa impostazione influenza il livello di difficoltà del tuo mondo. Puoi scegliere tra Pacifica, Facile, Normale e Difficile.
+
+§8§l§nPreferenze mondo§f§r
+
+§ecassa bonus§f: se questa impostazione è attiva, ci sarà una cassa con del bottino iniziale vicino al tuo punto di generazione iniziale.
+
+§eTipo di mondo§f: questa impostazione determina come il mondo viene creato. Seleziona Infinito o Piatto dal menu a tendina per cambiare il tipo di mondo.
+    I §emondi infiniti§f non hanno limiti spaziali.
+    I §emondi piatti§f non hanno colline o alberi, ma presentano solo un'area piatta e infinita da riempire con le tue creazioni.
+
+§eSeme§f: è un numero unico assegnato al mondo.
+Quando generi un nuovo mondo, inserendo un seme potrai controllare come verrà creato. Puoi anche usare una parola o una frase come seme: il gioco provvederà a convertirla in un numero.
+
+§8§l§nTrucchi e regole del gioco§f§r
+
+§eAttiva i trucchi§f: questa impostazione consente ai giocatori di usare i comandi.
+
+Di seguito trovi le regole di gioco.
+
+§eCiclo diurno§f: quando questa opzione è disattivata, il tempo non scorre.
+
+§eMantieni inventario§f: questa opzione consente ai giocatori di mantenere il proprio inventario quando muoiono.
+
+§eGenerazione creatura§f: quando questa opzione è disattivata, impedisce la generazione di tutte le creature.
+
+§eInfastidisci creatura§f: impedisce alle creature di distruggere il mondo.
+
+§eBottini rilasciati dalle entità§f: controlla se gli oggetti, come i vagonetti e i supporti per armature, rilasciano se stessi quando si rompono.
+
+§eMeteo variabile§f: quando questa opzione è disattivata, le condizioni meteorologiche non cambiano.

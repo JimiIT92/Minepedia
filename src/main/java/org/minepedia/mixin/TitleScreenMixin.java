@@ -40,7 +40,7 @@ public abstract class TitleScreenMixin extends Screen {
         final TextIconButtonWidget minepediaButton = this.addDrawableChild(
                 TextIconButtonWidget.builder(Text.translatable("ui.minepedia.how_to_play"), button -> MinecraftClient.getInstance().setScreen(new MinepediaIndexScreen()), true)
                         .width(20)
-                        .texture(new Identifier(Minepedia.MOD_ID, "icon/" + Minepedia.MOD_ID), 16, 16)
+                        .texture(Identifier.of(Minepedia.MOD_ID, "icon/" + Minepedia.MOD_ID), 16, 16)
                         .build()
         );
         final Element singlePlayerElement = this.children().stream().filter(children -> children instanceof ButtonWidget buttonWidget && buttonWidget.getMessage().equals(Text.translatable("menu.singleplayer"))).findFirst().orElse(null);

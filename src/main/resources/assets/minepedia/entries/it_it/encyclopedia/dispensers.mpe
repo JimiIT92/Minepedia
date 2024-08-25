@@ -1,0 +1,9 @@
+Il distributore serve a sparare gli oggetti. Dovrai attivare ogni distributore con un segnale di pietrarossa (ad esempio una leva).
+
+Per riempire di oggetti il distributore, premi {{ctrl.use}} su di esso, quindi trasferisci al suo interno gli oggetti che vuoi sparare prendendoli dall'inventario.
+
+§8§l§nUtilizzo§f§r
+
+Ora, verrà sparato un oggetto ogni volta che azionerai il distributore.
+
+Puoi usare un distributore anche per posizionare gli oggetti, per esempio le zucche sui golem di ferro e l'equipaggiamento sui supporti per armature.

@@ -366,7 +366,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         @Override
         public void render(final DrawContext context, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
             if(this.menu != null) {
-                context.drawText(this.menu.client.textRenderer, this.getStyledText(), x + 5, y + 2, this.getTextColor(), false);
+                context.drawTextWrapped(this.menu.client.textRenderer, this.getStyledText(), x + 5, y + 2, entryWidth, this.getTextColor());
                 if(this.screenSupplier != null) {
                     context.drawTexture(this.menu.ARROWS_TEXTURE, entryWidth - 5, y - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
                 }

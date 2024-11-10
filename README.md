@@ -11,7 +11,7 @@ Minepedia is a client-side only Fabric mod that brings the Minecraft: Bedrock Ed
 
 ### 🤔 Is it the same as Bedrock Edition?
 
-Some entries has been edited or removed to account the differences between Bedrock and Java edition. 
+Some entries have been edited or removed to account the differences between Bedrock and Java edition. 
 
 But, for the most part, you should get a one-to-one match between the two versions.
 

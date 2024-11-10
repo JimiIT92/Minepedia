@@ -1,7 +1,7 @@
 <img src="logo.png" alt="Minepedia logo"> 
 
-[![](https://img.shields.io/badge/Minecraft-1.21.1-success)](https://minecraft.net/)
-[![](https://img.shields.io/badge/Fabric-1.21.1--0.102.1-informational)](https://fabricmc.net/)
+[![](https://img.shields.io/badge/Minecraft-1.21.3-success)](https://minecraft.net/)
+[![](https://img.shields.io/badge/Fabric-1.21.3--0.107.3-informational)](https://fabricmc.net/)
 [![](http://cf.way2muchnoise.eu/full_995733_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/minepedia)
 [![](https://img.shields.io/modrinth/dt/TL9TUXua?logo=modrinth&label=Modrinth&color=darkgreen)](https://modrinth.com/mod/minepedia)
 

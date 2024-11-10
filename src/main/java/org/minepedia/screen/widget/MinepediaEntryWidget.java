@@ -1,5 +1,6 @@
 package org.minepedia.screen.widget;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
@@ -9,6 +10,7 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.gui.widget.MultilineTextWidget;
 import net.minecraft.client.gui.widget.ScrollableWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -109,9 +111,9 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      * @param context {@link DrawContext The Draw Context}
      */
     private void renderBackground(final DrawContext context) {
-        context.setShaderColor(0.125f, 0.125f, 0.125f, 1.0f);
+        RenderSystem.setShaderColor(0.125f, 0.125f, 0.125f, 1.0f);
         drawTexture(context, Screen.MENU_BACKGROUND_TEXTURE, this.getX(), this.getY(), this.getRight(), this.getBottom(), this.width, this.height,32, 32);
-        context.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     /**
@@ -168,7 +170,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      * @param textureHeight {@link Integer The texture total height}
      */
     private void drawTexture(final DrawContext context, final Identifier texture, final int x, final int y, final int u, final int v, final int width, final int height, final int textureWidth, final int textureHeight) {
-        context.drawTexture(texture, x, y, u, v, width, height, textureWidth, textureHeight);
+        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, width, height, textureWidth, textureHeight);
     }
 
     /**

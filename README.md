@@ -68,10 +68,7 @@ If your idea makes it to the mod you'll also be mentioned in the mod's credits! 
 
 You can download Minepedia on [Modrinth](https://modrinth.com/mod/minepedia) or on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/minepedia).
 
-**I will post new releases only there**. When a new version is released, a new blog post will also be available on
-[the MineWorld blog](http://mineworldminecraft.altervista.org/blog), which will give more details and insights about the update.
-
-The blogpost is only available in italian right now.
+**I will post new releases only there**.
 
 Any other websites that offers you Minepedia shouldn't be trusted and should be reported immediately (as they could be a scam and contain malicious software)!
 

@@ -89,6 +89,12 @@ But if you **really** want to financially support the project (or just buy me so
 Any other website asking you money for this project is a scam, and you should immediately report it to your local authorities as well! 😡
 
 -------------------------
+### 📜 Credits
+
+- 🇮🇹 Italian language support added by [cranos96](https://github.com/cranos96)
+- 🇺🇦 Ukrainian language support added by [StarmanMine142](https://github.com/StarmanMine142)
+
+-------------------------
 ### 😁 Conclusion
 
 Having an in-game guide that teaches you the game basics could be very handy for new players, but that is a Bedrock-exclusive feature for now.

@@ -9,7 +9,7 @@ Minepedia is a client-side only Fabric mod that brings the Minecraft: Bedrock Ed
 
 -------------------------
 
-this.overflows() ? -this.getScrollY()### 🤔 Is it the same as Bedrock Edition?
+### 🤔 Is it the same as Bedrock Edition?
 
 Some entries have been edited or removed to account the differences between Bedrock and Java edition. 
 

@@ -156,7 +156,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      */
     @Override
     public int getRowWidth() {
-        return this.width - (Math.max(0, this.getMaxPosition() - (this.getBottom() - this.getY() - 4)) > 0 ? 18 : 12);
+        return this.width - (Math.max(0, this.getMaxScrollY() - (this.getBottom() - this.getY() - 4)) > 0 ? 18 : 12);
     }
 
     /**
@@ -175,8 +175,8 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * @return The {@link Integer maximum entry position}
      */
     @Override
-    protected int getMaxPosition() {
-        return super.getMaxPosition() + 4;
+    public int getMaxScrollY() {
+        return super.getMaxScrollY() + 4;
     }
 
     /**
@@ -255,7 +255,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
 
         /**
          * Constructor. Set the {@link String Entry Title} and if
-         * the entry represents an header
+         * the entry represents a header
          *
          * @param section {@link MinepediaSection The Entry Section}
          * @param title {@link String The Entry Title}
@@ -267,7 +267,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
 
         /**
          * Constructor. Set the {@link String Entry Title} and if
-         * the entry represents an header
+         * the entry represents a header
          *
          * @param section {@link MinepediaSection The Entry Section}
          * @param title {@link String The Entry Title}
@@ -277,7 +277,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         public MinepediaMenuItem(final MinepediaSection section, final String title, final boolean isHeader, final ImageData image) {
             this.section = section;
             this.key = title;
-            this.text = title == null || title.isBlank() || title.isEmpty() ? Text.empty() : Text.translatable("menu." + Minepedia.MOD_ID + "." + (isHeader ? "header." : "") + title);
+            this.text = title == null || title.isBlank() ? Text.empty() : Text.translatable("menu." + Minepedia.MOD_ID + "." + (isHeader ? "header." : "") + title);
             this.isHeader = isHeader;
             this.image = image;
         }
@@ -333,7 +333,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         }
 
         /**
-         * Get if the entry is an header
+         * Get if the entry is a header
          *
          * @return {@link Boolean If the Entry represents an header}
          */
@@ -367,7 +367,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         @Override
         public void render(final DrawContext context, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
             if(this.menu != null) {
-                context.drawTextWrapped(this.menu.client.textRenderer, this.getStyledText(), x + 5, y + 2, entryWidth, this.getTextColor());
+                context.drawWrappedText(this.menu.client.textRenderer, this.getStyledText(), x + 5, y + 2, entryWidth, this.getTextColor(), false);
                 if(this.screenSupplier != null) {
                     context.drawTexture(RenderLayer::getGuiTextured, this.menu.ARROWS_TEXTURE, entryWidth - 5, y - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
                 }

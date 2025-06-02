@@ -1,0 +1,41 @@
+Blocos de Estrutura dão aos criadores a capacidade de copiar e salvar seções do mundo como estruturas. Estruturas salvas podem então ser coladas de volta no mundo.
+
+§8§l§nComo Obter§f§r
+
+Para conseguir um Bloco de Estrutura, você deve usar o comando /give. Para usá-lo, é necessário ter permissões de Operador.
+
+§8§l§nModos§f§r
+
+Blocos de Estrutura têm 3 modos que podem ser alternados usando o botão Modo:
+Salvar, Carregar e Canto.
+
+Modo Salvar salva uma área do mundo como uma estrutura.
+
+Modo Carregar carrega uma estrutura no mundo.
+Somente estruturas salvas no mundo ou incluídas em um datapack aplicado ao mundo podem ser carregadas.
+
+Modo Canto é usado com o botão Detectar no modo Salvar para definir automaticamente a área que você deseja salvar. Veja a seção sobre o Modo Canto abaixo para mais detalhes.
+
+§8§l§nAtivação por Redstone§f§r
+
+Redstone pode ser usada para ativar um Bloco de Estrutura. Isso fará com que ele salve uma estrutura ou carregue uma estrutura no mundo, dependendo do modo e das configurações do bloco.
+
+§8§l§nIntegridade e Semente§f§r
+
+Você pode mudar quanto da estrutura será carregada alterando os valores de Integridade e Semente.
+
+§eIntegridade§f – A porcentagem de blocos que serão carregados da estrutura. Os valores aceitos vão de 0 a 100. Os blocos serão escolhidos aleatoriamente se uma Semente não for especificada.
+
+§eSemente§f – O valor inserido aqui determina quais blocos serão removidos ao usar Integridade. Deixe este campo em branco para que os blocos sejam escolhidos aleatoriamente.
+
+§8§l§nBlocos de Vazio de Estrutura§f§r
+
+Quando uma estrutura contendo blocos de Vazio de Estrutura é carregada no mundo, qualquer bloco que seria removido onde o bloco de vazio está, permanecerá no mundo.
+
+Exemplo: carregar um naufrágio vazio no fundo do oceano normalmente substituiria a água por blocos de ar. Se o naufrágio estiver preenchido com blocos de vazio de estrutura, a água permanecerá, resultando em um naufrágio cheio de água.
+
+§8§l§nDetectar e Modo Canto§f§r
+
+Para selecionar automaticamente a área que deseja salvar, você pode colocar Blocos em Modo Canto ao redor da sua estrutura e nomeá-los com o mesmo nome da estrutura que deseja salvar.
+
+Ao pressionar o botão Detectar no modo Salvar, ele encontrará todos os Blocos de Canto com o mesmo nome e criará uma área de seleção para salvar tudo dentro do volume formado por esses blocos.

@@ -93,6 +93,7 @@ Any other website asking you money for this project is a scam, and you should im
 
 - 🇮🇹 Italian language support added by [cranos96](https://github.com/cranos96)
 - 🇺🇦 Ukrainian language support added by [StarmanMine142](https://github.com/StarmanMine142)
+- 🇧🇷 Brazilian Portugues language support added by [seriousfreezing](https://github.com/seriousfreezing)
 
 -------------------------
 ### 😁 Conclusion

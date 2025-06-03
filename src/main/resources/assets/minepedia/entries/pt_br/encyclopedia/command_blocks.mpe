@@ -1,0 +1,27 @@
+Blocos de Comando são uma ferramenta poderosa para criadores de mapas. Eles armazenam e executam comandos ao receberem um sinal de Redstone.
+
+Para obter um bloco de comando, é necessário usar o comando /give.
+
+Quando um Bloco de Comando executa ou falha ao executar o comando armazenado, ele envia um sinal de Redstone pelo lado para o qual a seta está apontando.
+
+§eTipo de Bloco§f – Existem três tipos de Blocos de Comando, cada um com sua cor e comportamento:
+
+  §eImpulso§f – Executa o comando armazenado apenas quando o bloco recebe um sinal de redstone.
+
+  §eCadeia§f – Executa o comando armazenado quando o Bloco de Comando atrás dele executou ou não seu comando.
+
+  §eRepetição§f – Uma vez ativado, esse Bloco de Comando continuará executando seu comando enquanto existir.
+
+§eCondição§f – Existem duas condições, que afetam o comportamento do Bloco de Comando:
+
+  §eIncondicional§f – Executa o comando armazenado mesmo que o Bloco de Comando atrás dele tenha falhado ao executar seu comando.
+
+  §eCondicional§f – Só executa o comando armazenado se o Bloco de Comando atrás dele tiver executado seu comando com sucesso.
+
+§eRedstone§f – Existem duas configurações de redstone, que afetam o comportamento do Bloco de Comando:
+
+  §ePrecisa de Redstone§f – Requer um sinal de redstone para ativar.
+
+  §eSempre Ativo§f – Não precisa de um sinal de redstone para ativar.
+
+Um Bloco de Comando também mostra sua saída anterior. Isso ajuda a entender se o comando falhou e o motivo da falha.

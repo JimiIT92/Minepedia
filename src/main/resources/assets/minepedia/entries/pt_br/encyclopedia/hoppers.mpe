@@ -1,0 +1,10 @@
+Os funis são usados para mover itens automaticamente.
+Eles podem ser conectados a outros blocos como baús ou jukeboxes.
+
+Os funis retiram continuamente itens de um contêiner colocado acima deles e os movem para o bloco para o qual estão apontando.
+
+§8§l§nUso§f§r
+
+Para fazer um funil apontar para um bloco específico, coloque o funil contra esse bloco enquanto estiver agachado.
+
+Se um funil for alimentado com Redstone, ele se tornará inativo e parará de mover itens.

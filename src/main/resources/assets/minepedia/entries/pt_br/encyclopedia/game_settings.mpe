@@ -1,0 +1,38 @@
+Ao criar um mundo, você tem várias opções. Abaixo estão as diferentes configurações que podem ser usadas para ajustar sua experiência.
+Não se preocupe se você não configurou tudo ao criar o mundo — essas opções podem ser alteradas a qualquer momento.
+
+§eNome do Mundo§f: Aqui você pode dar um nome ao seu mundo.
+
+§eModo de Jogo Padrão§f: Este é o modo de jogo em que todos os novos jogadores começarão.
+Você pode escolher entre modo sobrevivência ou criativo. Selecionar o modo criativo ativará os cheats.
+
+§eDificuldade§f: Esta configuração determina o quão difícil será o mundo. Você pode escolher entre Pacífico, Fácil, Normal ou Difícil.
+
+§8§l§nPreferências do Mundo§f§r
+
+§eBaú Bônus§f: Se essa opção estiver ativada, haverá um baú com alguns itens iniciais próximo ao local onde você aparecer.
+
+§eTipo de Mundo§f: Esta configuração controla como o mundo será gerado. Selecione Infinito ou Plano no menu para alterar o tipo de mundo.
+  §eMundos Infinitos§f continuam para sempre.
+  §eMundos Planos§f não possuem colinas nem árvores, apenas uma área plana infinita para você construir à vontade.
+
+§eSemente§f: Este é um número único para o mundo.
+Ao digitar uma semente ao criar um novo mundo, você controla como ele será gerado. Você também pode usar uma palavra ou frase como semente, e o jogo a converterá em um número automaticamente.
+
+§8§l§nTrapaças e Regras de Jogo§f§r
+
+§eAtivar Trapaças§f: Esta configuração permite que os jogadores usem comandos.
+
+Abaixo estão algumas regras de jogo:
+
+§eCiclo do Dia§f: O tempo não passará quando essa configuração estiver desativada.
+
+§eManter Inventário§f: Permite que os jogadores mantenham seu inventário após morrerem.
+
+§eAparição de Criaturas§f: Impede que qualquer criatura apareça quando esta configuração estiver desligada.
+
+§eDestruição por Criaturas§f: Impede que criaturas causem danos ao mundo.
+
+§eEntidades Deixam Itens§f: Controla se coisas como carrinhos ou suportes de armaduras deixam itens quando quebradas.
+
+§eCiclo do Clima§f: O clima não mudará enquanto essa configuração estiver desligada.

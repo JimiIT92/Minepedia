@@ -3,9 +3,9 @@ package org.minepedia.screen.widget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Style;
@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaScreen;
+import org.minepedia.screen.MinepediaScreenOld;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +33,9 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      */
     private final Identifier ARROWS_TEXTURE = Identifier.of(Minepedia.MOD_ID, "textures/gui/arrows.png");
     /**
-     * {@link MinepediaScreen The Minepedia main screen}
+     * {@link MinepediaScreenOld The Minepedia main screen}
      */
-    private final MinepediaScreen parentScreen;
+    private final MinepediaScreenOld parentScreen;
     /**
      * {@link Integer The Widget Y offset}
      */
@@ -60,10 +61,10 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * Constructor. Set the widget properties
      *
      * @param minecraftClient {@link MinecraftClient The Minecraft Client instance}
-     * @param parentScreen {@link MinepediaScreen The Minepedia main screen}
+     * @param parentScreen {@link MinepediaScreenOld The Minepedia main screen}
      * @param x {@link Integer The widget X coordinate}
      */
-    public MinepediaMenuWidget(final MinecraftClient minecraftClient, final MinepediaScreen parentScreen, final int x) {
+    public MinepediaMenuWidget(final MinecraftClient minecraftClient, final MinepediaScreenOld parentScreen, final int x) {
         super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.currentScreen).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
         this.setPosition(x, WIDGET_Y);
         this.parentScreen = parentScreen;
@@ -230,7 +231,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         /**
          * The {@link Supplier<MinepediaScreen> Supplier for the Screen} to open when selecting this item
          */
-        private Supplier<MinepediaScreen> screenSupplier;
+        public Supplier<MinepediaScreen> screenSupplier;
 
         /**
          * Constructor. Set the {@link String Entry Title}
@@ -294,9 +295,9 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         }
 
         /**
-         * Set the {@link MinepediaScreen Screen to open when selecting this item}
+         * Set the {@link MinepediaScreenOld Screen to open when selecting this item}
          *
-         * @param screenSupplier {@link MinepediaScreen The Screen to open when selecting this item}
+         * @param screenSupplier {@link MinepediaScreenOld The Screen to open when selecting this item}
          * @return {@link MinepediaMenuItem The menu Item}
          */
         public MinepediaMenuItem setScreenSupplier(final Supplier<MinepediaScreen> screenSupplier) {
@@ -319,7 +320,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          *
          * @return The {@link Text styled Text}
          */
-        private Text getStyledText() {
+        public Text getStyledText() {
             return this.text.copy().setStyle(Style.EMPTY.withItalic(this.isHeader));
         }
 
@@ -328,7 +329,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          *
          * @return The {@link Integer Text color}
          */
-        private int getTextColor() {
+        public int getTextColor() {
             return this.isHeader ? 0x666666 : 0xFFFFFF;
         }
 
@@ -369,7 +370,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
             if(this.menu != null) {
                 context.drawWrappedText(this.menu.client.textRenderer, this.getStyledText(), x + 5, y + 2, entryWidth, this.getTextColor(), false);
                 if(this.screenSupplier != null) {
-                    context.drawTexture(RenderLayer::getGuiTextured, this.menu.ARROWS_TEXTURE, entryWidth - 5, y - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, this.menu.ARROWS_TEXTURE, entryWidth - 5, y - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
                 }
             }
         }

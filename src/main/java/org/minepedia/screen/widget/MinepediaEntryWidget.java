@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
@@ -14,6 +15,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.joml.Matrix3x2f;
 import org.minepedia.Minepedia;
 import org.minepedia.util.AssetUtils;
 
@@ -109,9 +111,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      * @param context {@link DrawContext The Draw Context}
      */
     private void renderBackground(final DrawContext context) {
-        RenderSystem.setShaderColor(0.125f, 0.125f, 0.125f, 1.0f);
         drawTexture(context, Screen.MENU_BACKGROUND_TEXTURE, this.getX(), this.getY(), this.getRight(), this.getBottom(), this.width, this.height,32, 32);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     /**
@@ -138,8 +138,8 @@ public class MinepediaEntryWidget extends ScrollableWidget {
             if(this.overflows()) {
                 context.enableScissor(this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1);
             }
-            context.getMatrices().push();
-            context.getMatrices().translate(this.getX(), this.getY() + (this.overflows() ? -this.getScrollY() : 0), 0.0F);
+            context.getMatrices().pushMatrix();
+            context.getMatrices().translate(this.getX(), (float)(this.getY() + (this.overflows() ? -this.getScrollY() : 0)), new Matrix3x2f());
 
             if(imageData != null && imageData.position().equals(MinepediaMenuWidget.ImagePosition.START)) {
                 this.drawEntryImage(context);
@@ -151,7 +151,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
                 this.drawEntryImage(context);
             }
 
-            context.getMatrices().pop();
+            context.getMatrices().popMatrix();
             if(this.overflows()) {
                 context.disableScissor();
             }
@@ -173,7 +173,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      * @param textureHeight {@link Integer The texture total height}
      */
     private void drawTexture(final DrawContext context, final Identifier texture, final int x, final int y, final int u, final int v, final int width, final int height, final int textureWidth, final int textureHeight) {
-        context.drawTexture(RenderLayer::getGuiTextured, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
     }
 
     /**
@@ -183,12 +183,12 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      */
     private void drawEntryImage(final DrawContext context) {
         final MinepediaMenuWidget.ImageData image = this.entry.getImage();
-        context.getMatrices().push();
-        context.getMatrices().scale(IMAGE_SCALE_FACTOR, IMAGE_SCALE_FACTOR, IMAGE_SCALE_FACTOR);
+        context.getMatrices().pushMatrix();
+        context.getMatrices().scale(IMAGE_SCALE_FACTOR);
         final int x = this.getX() + (this.getWidth() / 2) - (image.width() / 2) - OFFSET_X;
         final int y = image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? 7 : (image.imageOffset() > 0 ? this.text.getHeight() + image.imageOffset() : this.getContentHeight());
         drawTexture(context, image.getTexture(), x, y, 0, 0, image.width(), image.height(), 512, 512);
-        context.getMatrices().pop();
+        context.getMatrices().popMatrix();
     }
 
     /**

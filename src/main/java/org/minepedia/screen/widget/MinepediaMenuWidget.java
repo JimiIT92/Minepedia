@@ -35,7 +35,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     /**
      * {@link MinepediaScreenOld The Minepedia main screen}
      */
-    private final MinepediaScreenOld parentScreen;
+    private final MinepediaScreen parentScreen;
     /**
      * {@link Integer The Widget Y offset}
      */
@@ -64,7 +64,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * @param parentScreen {@link MinepediaScreenOld The Minepedia main screen}
      * @param x {@link Integer The widget X coordinate}
      */
-    public MinepediaMenuWidget(final MinecraftClient minecraftClient, final MinepediaScreenOld parentScreen, final int x) {
+    public MinepediaMenuWidget(final MinecraftClient minecraftClient, final MinepediaScreen parentScreen, final int x) {
         super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.currentScreen).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
         this.setPosition(x, WIDGET_Y);
         this.parentScreen = parentScreen;
@@ -97,7 +97,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
                     this.client.setScreen(entry.screenSupplier.get());
                 } else {
                     super.setSelected(entry);
-                    this.parentScreen.selectMenuItem(entry);
+                    //this.parentScreen.selectMenuItem(entry);
                 }
             } else {
                  final int index = Math.max(1, Math.min(this.entries.indexOf(entry) + (isSelectingUpwards ? -1 : 1), this.entries.size() - 1));

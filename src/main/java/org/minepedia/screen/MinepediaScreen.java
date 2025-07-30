@@ -6,6 +6,7 @@ import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.*;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.ColorHelper;
 import org.jetbrains.annotations.Nullable;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.widget.MinepediaMenuWidget;
+import org.minepedia.util.AssetUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +29,8 @@ public abstract class MinepediaScreen extends Screen {
     private final List<MinepediaMenuWidget.MinepediaMenuItem> menuItems;
     private final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
     private MinepediaMenuWidget.MinepediaMenuItem selectedMenuEntry;
+    private ScrollableTextWidget content;
+    private TextWidget header;
 
     /**
      * Constructor. Set the {@link Screen Screen} {@link Text Title}
@@ -59,27 +63,60 @@ public abstract class MinepediaScreen extends Screen {
     protected abstract Screen getParent();
 
     protected void init() {
+        this.header = new TextWidget(Text.literal(""), this.textRenderer);
+        this.header.setWidth(200);
         DirectionalLayoutWidget directionalLayoutWidget = this.layout.addHeader(DirectionalLayoutWidget.vertical().spacing(8));
-        directionalLayoutWidget.add(new TextWidget(Text.literal("Header"), this.textRenderer), Positioner::alignHorizontalCenter);
+        directionalLayoutWidget.add(this.header, Positioner::alignHorizontalCenter);
+        GridWidget gridWidget = new GridWidget().setColumnSpacing(8);
+        gridWidget.getMainPositioner().marginX(4).marginBottom(4).alignHorizontalCenter();
+        GridWidget.Adder adder = gridWidget.createAdder(2);
 
-        this.menuEntries = this.layout.addBody(new MinepediaEntriesWidget());
+        this.menuEntries = new MinepediaEntriesWidget();
+        this.content = new ScrollableTextWidget(MinepediaScreen.this.width / 2, this.layout.getHeaderHeight(), MinepediaScreen.this.width / 2, MinepediaScreen.this.height - 77, Text.of(""), this.textRenderer);
 
-        //DirectionalLayoutWidget directionalLayoutWidget2 = this.layout.addFooter(DirectionalLayoutWidget.horizontal().spacing(8));
         this.menuEntries.setSelected(this.menuEntries.children().stream().filter(item -> !item.menuItem.isHeader()).findFirst().orElse(null));
+
+        adder.add(this.menuEntries);
+        adder.add(this.content);
+
+        this.layout.addBody(gridWidget);
         this.layout.forEachChild(this::addDrawableChild);
         this.refreshWidgetPositions();
     }
 
     protected void refreshWidgetPositions() {
         this.layout.refreshPositions();
-        this.menuEntries.position(this.width, this.layout);
+        this.menuEntries.position(MinepediaScreen.this.width / 2, this.layout);
+        this.content.setDimensions(MinepediaScreen.this.width / 2, this.layout.getContentHeight());
+        this.content.setPosition(MinepediaScreen.this.width / 2, this.layout.getHeaderHeight());
+        this.content.refreshScroll();
+        this.setHeader();
+    }
+
+    private void setHeader() {
+        if(this.selectedMenuEntry != null) {
+            this.header.setMessage(this.selectedMenuEntry.getText());
+        }
+    }
+
+    private void setContent() {
+        if(this.selectedMenuEntry != null && this.content != null) {
+            final String entryText = AssetUtils.readEntry(this.selectedMenuEntry.getSection(), this.selectedMenuEntry.getKey());
+            this.content.setMessage(entryText.isBlank() ? Text.empty() : Text.literal(I18n.translate(entryText).replace("Â", "").replace("â", "")));
+            this.content.refreshScroll();
+        }
     }
 
     @Environment(EnvType.CLIENT)
     class MinepediaEntriesWidget extends AlwaysSelectedEntryListWidget<MinepediaEntriesWidget.MinepediaEntryItem> {
         MinepediaEntriesWidget() {
-            super(MinepediaScreen.this.client, MinepediaScreen.this.width, MinepediaScreen.this.height - 77, 40, 16);
+            super(MinepediaScreen.this.client, MinepediaScreen.this.width / 2, MinepediaScreen.this.height - 77, 0, 16);
             MinepediaScreen.this.menuItems.stream().map(MinepediaEntryItem::new).forEach(this::addEntry);
+        }
+
+        @Override
+        public int getRowWidth() {
+            return this.width - (this.width / 6);
         }
 
         public void setSelected(@Nullable MinepediaScreen.MinepediaEntriesWidget.MinepediaEntryItem menuItem) {
@@ -89,6 +126,8 @@ public abstract class MinepediaScreen extends Screen {
                     Objects.requireNonNull(MinepediaScreen.this.client).setScreen(menuItem.menuItem.screenSupplier.get());
                 } else {
                     MinepediaScreen.this.selectedMenuEntry = menuItem.menuItem;
+                    MinepediaScreen.this.setHeader();
+                    MinepediaScreen.this.setContent();
                 }
             }
         }

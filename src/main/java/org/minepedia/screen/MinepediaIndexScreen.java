@@ -48,7 +48,7 @@ public final class MinepediaIndexScreen extends MinepediaScreen {
      *
      * @return {@link Screen The Parent Screen}
      */
-    protected Screen getParent() {
+    protected MinepediaScreen getParent() {
         return null;
     }
 

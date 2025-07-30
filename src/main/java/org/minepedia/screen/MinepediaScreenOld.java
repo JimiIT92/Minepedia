@@ -53,7 +53,7 @@ public abstract class MinepediaScreenOld extends Screen {
     @Override
     protected void init() {
         final int menuOffsetX = 5;
-        menuWidget = new MinepediaMenuWidget(this.client, this, menuOffsetX);
+        menuWidget = new MinepediaMenuWidget(this.client, null, menuOffsetX);
         menuWidget.init(this.menuItems);
         addDrawableChild(menuWidget);
         textWidget = new MinepediaEntryWidget(menuOffsetX + menuWidget.getWidth(), MinepediaMenuWidget.WIDGET_Y, this.width - menuWidget.getWidth() - (menuOffsetX * 3) + menuOffsetX, menuWidget.getHeight(), this.textRenderer);

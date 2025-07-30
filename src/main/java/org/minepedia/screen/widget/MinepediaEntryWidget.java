@@ -1,6 +1,5 @@
 package org.minepedia.screen.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
@@ -11,7 +10,6 @@ import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
 import net.minecraft.client.gui.widget.MultilineTextWidget;
 import net.minecraft.client.gui.widget.ScrollableWidget;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -44,7 +42,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     /**
      * The {@link Float Image scale factor}
      */
-    private final float IMAGE_SCALE_FACTOR = 0.5F;
+    private final float IMAGE_SCALE_FACTOR = 0.4F;
 
     /**
      * Constructor. Set the widget properties
@@ -70,13 +68,13 @@ public class MinepediaEntryWidget extends ScrollableWidget {
         this.entry = entry;
         final String entryText = AssetUtils.readEntry(entry.getSection(), entry.getKey());
         this.text = new MultilineTextWidget(entryText.isBlank() ? Text.empty() : this.getText(entryText), textRenderer).setMaxWidth(this.getWidth() - this.getPadding());
-        final int textY = 10;
-        this.text.setPosition(OFFSET_X, textY);
+        final int textY = this.getY() + 10;
+        this.text.setPosition(this.getX() + OFFSET_X, textY);
         final MinepediaMenuWidget.ImageData image = this.entry.getImage();
         if(image != null && image.position().equals(MinepediaMenuWidget.ImagePosition.START)) {
-            this.text.setPosition(OFFSET_X, textY + (image.height() / 2) + image.imageOffset());
+            this.text.setPosition(this.getX() + OFFSET_X, textY + (image.height() / 2) + image.imageOffset());
         }
-        this.setScrollY(0D);
+        this.refreshScroll();
     }
 
     /**
@@ -184,9 +182,9 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     private void drawEntryImage(final DrawContext context) {
         final MinepediaMenuWidget.ImageData image = this.entry.getImage();
         context.getMatrices().pushMatrix();
-        context.getMatrices().scale(IMAGE_SCALE_FACTOR);
-        final int x = this.getX() + (this.getWidth() / 2) - (image.width() / 2) - OFFSET_X;
-        final int y = image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? 7 : (image.imageOffset() > 0 ? this.text.getHeight() + image.imageOffset() : this.getContentHeight());
+        context.getMatrices().scaling(IMAGE_SCALE_FACTOR);
+        final int x = this.getX() + this.getWidth() + (this.getWidth() / 2) + OFFSET_X;
+        final int y = image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? this.getY() + (this.getHeight() / 2) : (this.getContentHeight() + (this.getContentHeight() / 2));
         drawTexture(context, image.getTexture(), x, y, 0, 0, image.width(), image.height(), 512, 512);
         context.getMatrices().popMatrix();
     }
@@ -202,7 +200,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
             final MinepediaMenuWidget.ImageData imageData = this.entry.getImage();
             return textHeight + (int)(imageData.height() * IMAGE_SCALE_FACTOR) + (imageData.imageOffset() / 3);
         }
-        return textHeight;
+        return textHeight * 10;
     }
 
     @Override

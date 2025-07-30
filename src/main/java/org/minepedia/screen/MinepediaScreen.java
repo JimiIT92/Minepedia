@@ -6,7 +6,6 @@ import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.*;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -14,8 +13,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 import org.jetbrains.annotations.Nullable;
 import org.minepedia.Minepedia;
+import org.minepedia.screen.widget.MinepediaEntryWidget;
 import org.minepedia.screen.widget.MinepediaMenuWidget;
-import org.minepedia.util.AssetUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +28,7 @@ public abstract class MinepediaScreen extends Screen {
     private final List<MinepediaMenuWidget.MinepediaMenuItem> menuItems;
     private final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
     private MinepediaMenuWidget.MinepediaMenuItem selectedMenuEntry;
-    private ScrollableTextWidget content;
+    private MinepediaEntryWidget content;
     private TextWidget header;
 
     /**
@@ -64,7 +63,7 @@ public abstract class MinepediaScreen extends Screen {
 
     protected void init() {
         this.header = new TextWidget(Text.literal(""), this.textRenderer);
-        this.header.setWidth(200);
+        this.header.setWidth(this.width);
         DirectionalLayoutWidget directionalLayoutWidget = this.layout.addHeader(DirectionalLayoutWidget.vertical().spacing(8));
         directionalLayoutWidget.add(this.header, Positioner::alignHorizontalCenter);
         GridWidget gridWidget = new GridWidget().setColumnSpacing(8);
@@ -72,7 +71,7 @@ public abstract class MinepediaScreen extends Screen {
         GridWidget.Adder adder = gridWidget.createAdder(2);
 
         this.menuEntries = new MinepediaEntriesWidget();
-        this.content = new ScrollableTextWidget(MinepediaScreen.this.width / 2, this.layout.getHeaderHeight(), MinepediaScreen.this.width / 2, MinepediaScreen.this.height - 77, Text.of(""), this.textRenderer);
+        this.content = new MinepediaEntryWidget(this.width / 2, this.layout.getHeaderHeight(), this.width / 2, this.height - 77, this.textRenderer);
 
         this.menuEntries.setSelected(this.menuEntries.children().stream().filter(item -> !item.menuItem.isHeader()).findFirst().orElse(null));
 
@@ -86,11 +85,11 @@ public abstract class MinepediaScreen extends Screen {
 
     protected void refreshWidgetPositions() {
         this.layout.refreshPositions();
-        this.menuEntries.position(MinepediaScreen.this.width / 2, this.layout);
-        this.content.setDimensions(MinepediaScreen.this.width / 2, this.layout.getContentHeight());
-        this.content.setPosition(MinepediaScreen.this.width / 2, this.layout.getHeaderHeight());
-        this.content.refreshScroll();
+        this.menuEntries.position(this.width / 2, this.layout);
+        this.content.setDimensions(this.width / 2, this.layout.getContentHeight());
+        this.content.setPosition(this.width / 2, this.layout.getHeaderHeight());
         this.setHeader();
+        this.setContent();
     }
 
     private void setHeader() {
@@ -101,9 +100,7 @@ public abstract class MinepediaScreen extends Screen {
 
     private void setContent() {
         if(this.selectedMenuEntry != null && this.content != null) {
-            final String entryText = AssetUtils.readEntry(this.selectedMenuEntry.getSection(), this.selectedMenuEntry.getKey());
-            this.content.setMessage(entryText.isBlank() ? Text.empty() : Text.literal(I18n.translate(entryText).replace("Â", "").replace("â", "")));
-            this.content.refreshScroll();
+            this.content.selectEntry(this.selectedMenuEntry);
         }
     }
 
@@ -143,7 +140,7 @@ public abstract class MinepediaScreen extends Screen {
             }
 
             public Text getNarration() {
-                return Text.translatable("narrator.select", new Object[]{this.text});
+                return Text.translatable("narrator.select", this.text);
             }
 
             public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickProgress) {

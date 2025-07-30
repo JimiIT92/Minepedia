@@ -12,7 +12,6 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaScreen;
 import org.minepedia.screen.MinepediaScreenOld;
@@ -97,7 +96,6 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
                     this.client.setScreen(entry.screenSupplier.get());
                 } else {
                     super.setSelected(entry);
-                    //this.parentScreen.selectMenuItem(entry);
                 }
             } else {
                  final int index = Math.max(1, Math.min(this.entries.indexOf(entry) + (isSelectingUpwards ? -1 : 1), this.entries.size() - 1));
@@ -122,53 +120,12 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     }
 
     /**
-     * Check if a {@link MinepediaMenuItem Menu Item} is selected
-     *
-     * @param index {@link Integer The list index}
-     * @return {@link Boolean True if the Menu Item is selected}
-     */
-    @Override
-    protected boolean isSelectedEntry(final int index) {
-        final MinepediaMenuItem selected =  this.getSelectedOrNull();
-        return selected != null && this.getEntry(index).getKey().equals(selected.getKey());
-    }
-
-    /**
-     * Get the {@link Integer Scrollbar X coordinate}
-     *
-     * @return The {@link Integer Scrollbar X coordinate}
-     */
-    @Override
-    protected int getScrollbarX() {
-        return this.width;
-    }
-
-    /**
      * Play the {@link SoundEvents#UI_BUTTON_CLICK Click Sound}
      */
     private void playClickSound() {
         this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
     }
 
-    /**
-     * Get the {@link Integer Entry Row Width}
-     *
-     * @return The {@link Integer Entry Row Width}
-     */
-    @Override
-    public int getRowWidth() {
-        return this.width - (Math.max(0, this.getMaxScrollY() - (this.getBottom() - this.getY() - 4)) > 0 ? 18 : 12);
-    }
-
-    /**
-     * Get the {@link Integer Entry Row starting coordinate}
-     *
-     * @return The {@link Integer Entry Row starting coordinate}
-     */
-    @Override
-    public int getRowLeft() {
-        return this.getX() + 6;
-    }
 
     /**
      * Get the {@link Integer maximum entry position}
@@ -178,24 +135,6 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     @Override
     public int getMaxScrollY() {
         return super.getMaxScrollY() + 4;
-    }
-
-    /**
-     * Check if a key is pressed
-     *
-     * @param keyCode {@link Integer The key code}
-     * @param scanCode {@link Integer The key scan code}
-     * @param modifiers {@link Integer The key modifiers}
-     * @return {@link Boolean True if the key has been pressed}
-     */
-    @Override
-    public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers) {
-        if(keyCode != GLFW.GLFW_KEY_UP && keyCode != GLFW.GLFW_KEY_DOWN) {
-            return true;
-        }
-        this.isSelectingUpwards = GLFW.GLFW_KEY_UP == keyCode;
-        this.shouldPlayClickHeaderSound = false;
-        return super.keyReleased(keyCode, scanCode, modifiers);
     }
 
     /**

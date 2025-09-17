@@ -14,7 +14,6 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaScreen;
-import org.minepedia.screen.MinepediaScreenOld;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +31,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      */
     private final Identifier ARROWS_TEXTURE = Identifier.of(Minepedia.MOD_ID, "textures/gui/arrows.png");
     /**
-     * {@link MinepediaScreenOld The Minepedia main screen}
+     * {@link MinepediaScreen The Minepedia main screen}
      */
     private final MinepediaScreen parentScreen;
     /**
@@ -60,7 +59,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * Constructor. Set the widget properties
      *
      * @param minecraftClient {@link MinecraftClient The Minecraft Client instance}
-     * @param parentScreen {@link MinepediaScreenOld The Minepedia main screen}
+     * @param parentScreen {@link MinepediaScreen The Minepedia main screen}
      * @param x {@link Integer The widget X coordinate}
      */
     public MinepediaMenuWidget(final MinecraftClient minecraftClient, final MinepediaScreen parentScreen, final int x) {
@@ -234,9 +233,9 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         }
 
         /**
-         * Set the {@link MinepediaScreenOld Screen to open when selecting this item}
+         * Set the {@link MinepediaScreen Screen to open when selecting this item}
          *
-         * @param screenSupplier {@link MinepediaScreenOld The Screen to open when selecting this item}
+         * @param screenSupplier {@link MinepediaScreen The Screen to open when selecting this item}
          * @return {@link MinepediaMenuItem The menu Item}
          */
         public MinepediaMenuItem setScreenSupplier(final Supplier<MinepediaScreen> screenSupplier) {

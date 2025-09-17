@@ -44,6 +44,8 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      */
     private final float IMAGE_SCALE_FACTOR = 0.4F;
 
+    private int imageY = 0;
+
     /**
      * Constructor. Set the widget properties
      *
@@ -70,10 +72,16 @@ public class MinepediaEntryWidget extends ScrollableWidget {
         this.text = new MultilineTextWidget(entryText.isBlank() ? Text.empty() : this.getText(entryText), textRenderer).setMaxWidth(this.getWidth() - this.getPadding());
         final int textY = this.getY() + 10;
         this.text.setPosition(this.getX() + OFFSET_X, textY);
+        this.imageY = 0;
         final MinepediaMenuWidget.ImageData image = this.entry.getImage();
-        if(image != null && image.position().equals(MinepediaMenuWidget.ImagePosition.START)) {
-            this.text.setPosition(this.getX() + OFFSET_X, textY + (image.height() / 2) + image.imageOffset());
+        if(image != null) {
+            final boolean isStartImage = image.position().equals(MinepediaMenuWidget.ImagePosition.START);
+            if(isStartImage) {
+                this.text.setPosition(this.getX() + OFFSET_X, textY + (image.height() / 2) + image.imageOffset());
+            }
+            this.imageY = getImageY(image);
         }
+        this.setScrollY(0);
         this.refreshScroll();
     }
 
@@ -133,11 +141,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     protected void renderContents(final DrawContext context, final int mouseX, final int mouseY, final float delta) {
         if(this.entry != null) {
             final MinepediaMenuWidget.ImageData imageData = this.entry.getImage();
-            if(this.overflows()) {
-                context.enableScissor(this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1);
-            }
-            context.getMatrices().pushMatrix();
-            context.getMatrices().translate(this.getX(), (float)(this.getY() + (this.overflows() ? -this.getScrollY() : 0)), new Matrix3x2f());
+            context.enableScissor(this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1);
 
             if(imageData != null && imageData.position().equals(MinepediaMenuWidget.ImagePosition.START)) {
                 this.drawEntryImage(context);
@@ -149,10 +153,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
                 this.drawEntryImage(context);
             }
 
-            context.getMatrices().popMatrix();
-            if(this.overflows()) {
-                context.disableScissor();
-            }
+            context.disableScissor();
         }
     }
 
@@ -184,10 +185,10 @@ public class MinepediaEntryWidget extends ScrollableWidget {
         context.getMatrices().pushMatrix();
         context.getMatrices().scaling(IMAGE_SCALE_FACTOR);
         final int x = this.getX() + this.getWidth() + (this.getWidth() / 2) + OFFSET_X;
-        final int y = image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? this.getY() + (this.getHeight() / 2) : (this.getContentHeight() + (this.getContentHeight() / 2));
-        drawTexture(context, image.getTexture(), x, y, 0, 0, image.width(), image.height(), 512, 512);
+        drawTexture(context, image.getTexture(), x, this.imageY, 0, 0, image.width(), image.height(), 512, 512);
         context.getMatrices().popMatrix();
     }
+
 
     /**
      * Get the total {@link Integer height} of contents
@@ -198,9 +199,15 @@ public class MinepediaEntryWidget extends ScrollableWidget {
         final int textHeight = this.text.getHeight();
         if(this.entry != null && this.entry.getImage() != null) {
             final MinepediaMenuWidget.ImageData imageData = this.entry.getImage();
-            return textHeight + (int)(imageData.height() * IMAGE_SCALE_FACTOR) + (imageData.imageOffset() / 3);
+            return (textHeight * 10) + (int)(imageData.height() * IMAGE_SCALE_FACTOR) + (imageData.imageOffset() / 3);
         }
-        return textHeight * 10;
+        return this.height > textHeight ? textHeight : textHeight * 20;
+    }
+
+    private int getImageHeight() {
+        final int textHeight = this.text.getHeight();
+        final MinepediaMenuWidget.ImageData imageData = this.entry.getImage();
+        return textHeight + (int)(imageData.height() * IMAGE_SCALE_FACTOR) + (imageData.imageOffset() / 3);
     }
 
     @Override
@@ -228,4 +235,21 @@ public class MinepediaEntryWidget extends ScrollableWidget {
         return Text.literal(I18n.translate(rawText).replace("Â", "").replace("â", ""));
     }
 
+    private int getImageY(final MinepediaMenuWidget.ImageData image) {
+        return (image.position().equals(MinepediaMenuWidget.ImagePosition.START) ? this.getY() + (this.getHeight() / 2) : (this.getImageHeight() + (this.getImageHeight() / 2)));
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        final double previousScrollY = this.getScrollY();
+        final boolean scrolled = super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+        if(scrolled && (previousScrollY != this.getScrollY())) {
+            this.text.setY(this.text.getY() + (int)verticalAmount);
+            final MinepediaMenuWidget.ImageData image = this.entry.getImage();
+            if(image != null) {
+                this.imageY += ((int) verticalAmount * 2);
+            }
+        }
+        return scrolled;
+    }
 }

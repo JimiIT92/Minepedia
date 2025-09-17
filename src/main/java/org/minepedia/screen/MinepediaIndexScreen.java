@@ -19,7 +19,7 @@ public final class MinepediaIndexScreen extends MinepediaScreen {
         super(
                 "how_to_play",
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "getting_started", true),
-                new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "moving_around", new MinepediaMenuWidget.ImageData("moving_around", 512, 304, MinepediaMenuWidget.ImagePosition.END, 100)),
+                new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "moving_around", new MinepediaMenuWidget.ImageData("moving_around", 512, 304, MinepediaMenuWidget.ImagePosition.END)),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "gathering_resources"),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "selecting_items", new MinepediaMenuWidget.ImageData("selecting_items", 512, 272, MinepediaMenuWidget.ImagePosition.END, 130)),
                 new MinepediaMenuWidget.MinepediaMenuItem(MinepediaMenuWidget.MinepediaSection.INDEX, "placing_blocks"),

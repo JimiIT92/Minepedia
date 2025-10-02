@@ -3,6 +3,7 @@ package org.minepedia.screen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.*;
@@ -143,19 +144,37 @@ public abstract class MinepediaScreen extends Screen {
                 return Text.translatable("narrator.select", this.text);
             }
 
-            public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickProgress) {
+            /**
+             * Render a menu entry
+             *
+             * @param context {@link DrawContext The Draw Context}
+             * @param mouseX {@link Integer The mouse X coordinate}
+             * @param mouseY {@link Integer The mouse Y coordinate}
+             * @param hovered {@link Boolean If the entry is hovered}
+             * @param deltaTicks {@link Float The delta ticks}
+             */
+            @Override
+            public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
                 int color = this.menuItem.isHeader() ? -1 : ColorHelper.fromFloats(1F, 0.6F, 0.6F, 0.6F);
-                context.drawText(MinepediaScreen.this.textRenderer, this.text, x + 5, y + 2, color, false);
+                context.drawText(MinepediaScreen.this.textRenderer, this.text, this.getX() + 5, this.getY() + 2, color, false);
                 if(this.menuItem.screenSupplier != null) {
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, MinepediaScreen.this.ARROWS_TEXTURE, x + entryWidth - 15, y - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, MinepediaScreen.this.ARROWS_TEXTURE, this.getX() + this.getWidth() - 15, this.getY() - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
                 }
             }
 
-            public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            /**
+             * Select the entry on mouse click
+             *
+             * @param click {@link Click The mouse click}
+             * @param doubled {@link Boolean Whether there has been a double click}
+             * @return {@link Boolean#TRUE True}
+             */
+            @Override
+            public boolean mouseClicked(final Click click, final boolean doubled) {
                 if(!this.menuItem.isHeader()) {
                     MinepediaScreen.MinepediaEntriesWidget.this.setSelected(this);
                     Objects.requireNonNull(MinepediaScreen.this.client).getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
-                    return super.mouseClicked(mouseX, mouseY, button);
+                    return super.mouseClicked(click, doubled);
                 }
                 return false;
             }

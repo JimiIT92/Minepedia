@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaIndexScreen;
@@ -45,7 +46,7 @@ public final class MinepediaKeyBindings {
                 "key." + Minepedia.MOD_ID + "."  + name,
                 InputUtil.Type.KEYSYM,
                 keyCode,
-                "category." + Minepedia.MOD_ID
+                KeyBinding.Category.create(Identifier.of("category." + Minepedia.MOD_ID))
         ));
     }
 

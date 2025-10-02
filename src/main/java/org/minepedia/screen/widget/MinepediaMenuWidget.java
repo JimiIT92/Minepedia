@@ -4,6 +4,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -98,7 +99,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
                 }
             } else {
                  final int index = Math.max(1, Math.min(this.entries.indexOf(entry) + (isSelectingUpwards ? -1 : 1), this.entries.size() - 1));
-                 this.setSelected(this.getEntry(index));
+                 this.setSelected(this.entries.get(index));
                  if(this.shouldPlayClickHeaderSound) {
                      this.playClickSound();
                  }
@@ -293,22 +294,17 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          * Render a menu entry
          *
          * @param context {@link DrawContext The Draw Context}
-         * @param index {@link Integer The entry index}
-         * @param y {@link Integer The entry Y coordinate}
-         * @param x {@link Integer The entry X coordinate}
-         * @param entryWidth {@link Integer The entry width}
-         * @param entryHeight {@link Integer The entry width}
          * @param mouseX {@link Integer The mouse X coordinate}
          * @param mouseY {@link Integer The mouse Y coordinate}
          * @param hovered {@link Boolean If the entry is hovered}
-         * @param tickDelta {@link Float The screen delta time}
+         * @param deltaTicks {@link Float The delta ticks}
          */
         @Override
-        public void render(final DrawContext context, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
+        public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             if(this.menu != null) {
-                context.drawWrappedText(this.menu.client.textRenderer, this.getStyledText(), x + 5, y + 2, entryWidth, this.getTextColor(), false);
+                context.drawWrappedText(this.menu.client.textRenderer, this.getStyledText(), this.getX() + 5, this.getY() + 2, this.getWidth(), this.getTextColor(), false);
                 if(this.screenSupplier != null) {
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, this.menu.ARROWS_TEXTURE, entryWidth - 5, y - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
+                    context.drawTexture(RenderPipelines.GUI_TEXTURED, this.menu.ARROWS_TEXTURE, this.getWidth() - 5, this.getY() - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
                 }
             }
         }
@@ -316,13 +312,12 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         /**
          * Select the entry on mouse click
          *
-         * @param mouseX {@link Integer The mouse X coordinate}
-         * @param mouseY {@link Integer The mouse Y coordinate}
-         * @param button {@link Integer The mouse button that has been clicked}
+         * @param click {@link Click The mouse click}
+         * @param doubled {@link Boolean Whether there has been a double click}
          * @return {@link Boolean#TRUE True}
          */
         @Override
-        public boolean mouseClicked(final double mouseX, final double mouseY, final int button) {
+        public boolean mouseClicked(final Click click, final boolean doubled) {
             if(this.menu != null) {
                 this.menu.isSelectingUpwards = false;
                 this.menu.shouldPlayClickHeaderSound = true;

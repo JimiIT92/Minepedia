@@ -1,7 +1,7 @@
 {
   "modmenu.descriptionTranslation.minepedia": "Додає посібник з Bedrock Edition до Java Edition",
   "ui.minepedia.how_to_play": "Посібник",
-  "category.minepedia": "Minepedia",
+  "key.category.minepedia.category.minepedia": "Minepedia",
   "key.minepedia.screen": "Відкрити посібник",
   "screen.minepedia.how_to_play": "Посібник",
   "screen.minepedia.encyclopedia": "Енциклопедія Minecraft",

@@ -46,7 +46,7 @@ public final class MinepediaKeyBindings {
                 "key." + Minepedia.MOD_ID + "."  + name,
                 InputUtil.Type.KEYSYM,
                 keyCode,
-                KeyBinding.Category.create(Identifier.of("category." + Minepedia.MOD_ID))
+                KeyBinding.Category.create(Identifier.of(Minepedia.MOD_ID, "category." + Minepedia.MOD_ID))
         ));
     }
 

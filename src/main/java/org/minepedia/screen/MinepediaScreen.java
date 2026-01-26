@@ -173,7 +173,7 @@ public abstract class MinepediaScreen extends Screen {
             public boolean mouseClicked(final Click click, final boolean doubled) {
                 if(!this.menuItem.isHeader()) {
                     MinepediaScreen.MinepediaEntriesWidget.this.setSelected(this);
-                    Objects.requireNonNull(MinepediaScreen.this.client).getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+                    Objects.requireNonNull(MinepediaScreen.this.client).getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0f));
                     return super.mouseClicked(click, doubled);
                 }
                 return false;

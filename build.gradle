@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.11-SNAPSHOT'
+    id 'fabric-loom' version "${loom_version}"
 }
 
 version = project.mod_version
@@ -32,17 +32,11 @@ processResources {
     }
 }
 
-def targetJavaVersion = 21
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.release.set(targetJavaVersion)
+    it.options.release = 21
 }
 
 java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
     withSourcesJar()
 
     sourceCompatibility = JavaVersion.VERSION_21
@@ -50,6 +44,7 @@ java {
 }
 
 jar {
+    inputs.property "archivesName", project.base.archivesName
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}"}
     }

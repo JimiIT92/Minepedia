@@ -13,7 +13,6 @@ import net.minecraft.client.gui.widget.ScrollableWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.joml.Matrix3x2f;
 import org.minepedia.Minepedia;
 import org.minepedia.util.AssetUtils;
 
@@ -241,6 +240,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        verticalAmount *= 5;
         final double previousScrollY = this.getScrollY();
         final boolean scrolled = super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         if(scrolled && (previousScrollY != this.getScrollY())) {

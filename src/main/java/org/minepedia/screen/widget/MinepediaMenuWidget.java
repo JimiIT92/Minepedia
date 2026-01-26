@@ -17,7 +17,6 @@ import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaScreen;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -31,10 +30,6 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * The {@link Identifier GUI Arrows Texture Identifier}
      */
     private final Identifier ARROWS_TEXTURE = Identifier.of(Minepedia.MOD_ID, "textures/gui/arrows.png");
-    /**
-     * {@link MinepediaScreen The Minepedia main screen}
-     */
-    private final MinepediaScreen parentScreen;
     /**
      * {@link Integer The Widget Y offset}
      */
@@ -60,27 +55,14 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * Constructor. Set the widget properties
      *
      * @param minecraftClient {@link MinecraftClient The Minecraft Client instance}
-     * @param parentScreen {@link MinepediaScreen The Minepedia main screen}
      * @param x {@link Integer The widget X coordinate}
      */
-    public MinepediaMenuWidget(final MinecraftClient minecraftClient, final MinepediaScreen parentScreen, final int x) {
+    public MinepediaMenuWidget(final MinecraftClient minecraftClient, final int x) {
         super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.currentScreen).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
         this.setPosition(x, WIDGET_Y);
-        this.parentScreen = parentScreen;
         this.entries = new ArrayList<>();
         this.isSelectingUpwards = false;
         this.shouldPlayClickHeaderSound = true;
-    }
-
-    /**
-     * Initialize the {@link MinepediaMenuWidget Menu} with the provided {@link MinepediaMenuItem Menu Items}
-     *
-     * @param menuItems The {@link MinepediaMenuItem Menu Items}
-     */
-    public void init(final MinepediaMenuItem... menuItems) {
-        if(menuItems != null) {
-            Arrays.stream(menuItems).map(entry -> entry.setMenu(this)).forEach(this::addEntry);
-        }
     }
 
     /**
@@ -123,7 +105,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * Play the {@link SoundEvents#UI_BUTTON_CLICK Click Sound}
      */
     private void playClickSound() {
-        this.client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+        this.client.getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0f));
     }
 
 

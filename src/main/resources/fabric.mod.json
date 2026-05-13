@@ -20,13 +20,17 @@
     "client": [
       "org.minepedia.Minepedia"
     ],
-    "main": []
+    "main": [],
+    "modmenu": [
+      "org.minepedia.config.MinepediaModMenu"
+    ]
   },
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric-api": "*",
     "java": ">=25",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "cloth-config": ">=${cloth_config_version}"
   },
   "mixins": [
     "mixins.minepedia.json"

@@ -36,15 +36,17 @@ public abstract class TitleScreenMixin extends Screen {
      */
     @Inject(method = "init", at = @At(value = "RETURN", target = "Lnet/minecraft/client/gui/screen/TitleScreen;init()V"))
     private void onInitWidgets(final CallbackInfo callbackInfo) {
-        final SpriteIconButton minepediaButton = this.addRenderableWidget(
-                SpriteIconButton.builder(Component.translatable("ui.minepedia.how_to_play"),  button -> Minecraft.getInstance().setScreen(new MinepediaIndexScreen()), true)
-                        .width(20)
-                        .sprite(Identifier.fromNamespaceAndPath(Minepedia.MOD_ID, "icon/" + Minepedia.MOD_ID), 16, 16)
-                        .build()
-        );
-        var singlePlayerElement = this.children().stream().filter(children -> children instanceof Button buttonWidget && buttonWidget.getMessage().equals(Component.translatable("menu.singleplayer"))).findFirst().orElse(null);
-        if(singlePlayerElement instanceof Button singlePlayerButton) {
-            minepediaButton.setPosition(singlePlayerButton.getRight() + 4, singlePlayerButton.getY());
+        if(Minepedia.config().SHOW_MINEPEDIA_BUTTON) {
+            final SpriteIconButton minepediaButton = this.addRenderableWidget(
+                    SpriteIconButton.builder(Component.translatable("ui.minepedia.how_to_play"),  button -> Minecraft.getInstance().setScreen(new MinepediaIndexScreen()), true)
+                            .width(20)
+                            .sprite(Identifier.fromNamespaceAndPath(Minepedia.MOD_ID, "icon/" + Minepedia.MOD_ID), 16, 16)
+                            .build()
+            );
+            var singlePlayerElement = this.children().stream().filter(children -> children instanceof Button buttonWidget && buttonWidget.getMessage().equals(Component.translatable("menu.singleplayer"))).findFirst().orElse(null);
+            if(singlePlayerElement instanceof Button singlePlayerButton) {
+                minepediaButton.setPosition(singlePlayerButton.getRight() + 4, singlePlayerButton.getY());
+            }
         }
     }
 

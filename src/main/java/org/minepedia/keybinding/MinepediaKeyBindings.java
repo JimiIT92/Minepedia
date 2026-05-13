@@ -1,52 +1,52 @@
 package org.minepedia.keybinding;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaIndexScreen;
 
 /**
- * {@link Minepedia Minepedia} {@link KeyBinding Key Bindings}
+ * {@link Minepedia Minepedia} {@link KeyMapping Key Bindings}
  */
 @Environment(EnvType.CLIENT)
 public final class MinepediaKeyBindings {
 
     /**
-     * The {@link Minepedia Minepedia} {@link KeyBinding screen Key Binding}
+     * The {@link Minepedia Minepedia} {@link KeyMapping screen Key Binding}
      */
-    private static KeyBinding MINEPEDIA_KEY;
+    private static KeyMapping MINEPEDIA_KEY;
 
     /**
-     * Initialize the {@link KeyBinding Key Bindings}
+     * Initialize the {@link KeyMapping Key Bindings}
      */
     public static void init() {
         MINEPEDIA_KEY = registerKeyBinding("screen", GLFW.GLFW_KEY_K);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (MINEPEDIA_KEY.wasPressed()) {
+            while (MINEPEDIA_KEY.isDown()) {
                 client.setScreen(new MinepediaIndexScreen());
             }
         });
     }
 
     /**
-     * Register a {@link KeyBinding Key Binding}
+     * Register a {@link KeyMapping Key Binding}
      *
      * @param name {@link String The Key Binding name}
      * @param keyCode {@link Integer The Key Binding key code}
-     * @return {@link KeyBinding The registered Key Binding}
+     * @return {@link KeyMapping The registered Key Binding}
      */
-    private static KeyBinding registerKeyBinding(final String name, final int keyCode) {
-        return KeyBindingHelper.registerKeyBinding(new KeyBinding(
+    private static KeyMapping registerKeyBinding(final String name, final int keyCode) {
+        return KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key." + Minepedia.MOD_ID + "."  + name,
-                InputUtil.Type.KEYSYM,
+                InputConstants.Type.KEYSYM,
                 keyCode,
-                KeyBinding.Category.create(Identifier.of(Minepedia.MOD_ID, "category." + Minepedia.MOD_ID))
+                KeyMapping.Category.register(Identifier.fromNamespaceAndPath(Minepedia.MOD_ID, "category." + Minepedia.MOD_ID))
         ));
     }
 

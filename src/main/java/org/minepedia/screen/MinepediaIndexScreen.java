@@ -2,7 +2,7 @@ package org.minepedia.screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.widget.MinepediaMenuWidget;
 

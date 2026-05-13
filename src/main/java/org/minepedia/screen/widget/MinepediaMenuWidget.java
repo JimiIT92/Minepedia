@@ -2,17 +2,18 @@ package org.minepedia.screen.widget;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvents;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaScreen;
 
@@ -24,12 +25,12 @@ import java.util.function.Supplier;
  * {@link Minepedia Minepedia} menu list widget
  */
 @Environment(EnvType.CLIENT)
-public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<MinepediaMenuWidget.MinepediaMenuItem> {
+public class MinepediaMenuWidget extends ObjectSelectionList<MinepediaMenuWidget.MinepediaMenuItem> {
 
     /**
      * The {@link Identifier GUI Arrows Texture Identifier}
      */
-    private final Identifier ARROWS_TEXTURE = Identifier.of(Minepedia.MOD_ID, "textures/gui/arrows.png");
+    private final Identifier ARROWS_TEXTURE = Identifier.fromNamespaceAndPath(Minepedia.MOD_ID, "textures/gui/arrows.png");
     /**
      * {@link Integer The Widget Y offset}
      */
@@ -54,11 +55,11 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
     /**
      * Constructor. Set the widget properties
      *
-     * @param minecraftClient {@link MinecraftClient The Minecraft Client instance}
+     * @param minecraftClient {@link Minecraft The Minecraft Client instance}
      * @param x {@link Integer The widget X coordinate}
      */
-    public MinepediaMenuWidget(final MinecraftClient minecraftClient, final int x) {
-        super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.currentScreen).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
+    public MinepediaMenuWidget(final Minecraft minecraftClient, final int x) {
+        super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.screen).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
         this.setPosition(x, WIDGET_Y);
         this.entries = new ArrayList<>();
         this.isSelectingUpwards = false;
@@ -75,7 +76,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         if (entry != null) {
             if(!entry.isHeader) {
                 if(entry.screenSupplier != null) {
-                    this.client.setScreen(entry.screenSupplier.get());
+                    this.minecraft.setScreen(entry.screenSupplier.get());
                 } else {
                     super.setSelected(entry);
                 }
@@ -105,9 +106,8 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * Play the {@link SoundEvents#UI_BUTTON_CLICK Click Sound}
      */
     private void playClickSound() {
-        this.client.getSoundManager().play(PositionedSoundInstance.ui(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
     }
-
 
     /**
      * Get the {@link Integer maximum entry position}
@@ -115,15 +115,15 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
      * @return The {@link Integer maximum entry position}
      */
     @Override
-    public int getMaxScrollY() {
-        return super.getMaxScrollY() + 4;
+    public int maxScrollAmount() {
+        return super.maxScrollAmount() + 4;
     }
 
     /**
      * Inner class for a {@link MinepediaMenuWidget Minepedia Menu Entry}
      */
     @Environment(EnvType.CLIENT)
-    public static class MinepediaMenuItem extends AlwaysSelectedEntryListWidget.Entry<MinepediaMenuItem> {
+    public static class MinepediaMenuItem extends ObjectSelectionList.Entry<MinepediaMenuItem> {
 
         /**
          * {@link MinepediaSection The entry section}
@@ -134,9 +134,9 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          */
         private final String key;
         /**
-         * {@link Text The Entry Text}
+         * {@link Component The Entry Text}
          */
-        private final Text text;
+        private final Component text;
         /**
          * {@link ImageData The Image data}
          */
@@ -199,7 +199,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         public MinepediaMenuItem(final MinepediaSection section, final String title, final boolean isHeader, final ImageData image) {
             this.section = section;
             this.key = title;
-            this.text = title == null || title.isBlank() ? Text.empty() : Text.translatable("menu." + Minepedia.MOD_ID + "." + (isHeader ? "header." : "") + title);
+            this.text = title == null || title.isBlank() ? Component.empty() : Component.translatable("menu." + Minepedia.MOD_ID + "." + (isHeader ? "header." : "") + title);
             this.isHeader = isHeader;
             this.image = image;
         }
@@ -227,21 +227,21 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         }
 
         /**
-         * Get the {@link Text Narrator Text}
+         * Get the {@link Component Narrator Text}
          *
-         * @return The {@link Text Narrator Text}
+         * @return The {@link Component Narrator Text}
          */
         @Override
-        public Text getNarration() {
-            return Text.translatable("narrator.select", this.text);
+        public @NonNull Component getNarration() {
+            return Component.translatable("narrator.select", this.text);
         }
 
         /**
-         * Get the {@link Text styled Text} to render inside the entry
+         * Get the {@link Component styled Text} to render inside the entry
          *
-         * @return The {@link Text styled Text}
+         * @return The {@link Component styled Text}
          */
-        public Text getStyledText() {
+        public Component getStyledText() {
             return this.text.copy().setStyle(Style.EMPTY.withItalic(this.isHeader));
         }
 
@@ -264,29 +264,29 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         }
 
         /**
-         * Get the entry {@link Text text}
+         * Get the entry {@link Component text}
          *
-         * @return {@link Text The entry text}
+         * @return {@link Component The entry text}
          */
-        public Text getText() {
+        public Component getText() {
             return this.text;
         }
 
         /**
          * Render a menu entry
          *
-         * @param context {@link DrawContext The Draw Context}
+         * @param context {@link GuiGraphicsExtractor The Draw Context}
          * @param mouseX {@link Integer The mouse X coordinate}
          * @param mouseY {@link Integer The mouse Y coordinate}
          * @param hovered {@link Boolean If the entry is hovered}
          * @param deltaTicks {@link Float The delta ticks}
          */
         @Override
-        public void render(final DrawContext context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void extractContent(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             if(this.menu != null) {
-                context.drawWrappedText(this.menu.client.textRenderer, this.getStyledText(), this.getX() + 5, this.getY() + 2, this.getWidth(), this.getTextColor(), false);
+                context.textWithWordWrap(this.menu.minecraft.font, this.getStyledText(), this.getX() + 5, this.getY() + 2, this.getWidth(), this.getTextColor(), false);
                 if(this.screenSupplier != null) {
-                    context.drawTexture(RenderPipelines.GUI_TEXTURED, this.menu.ARROWS_TEXTURE, this.getWidth() - 5, this.getY() - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
+                    context.blit(RenderPipelines.GUI_TEXTURED, this.menu.ARROWS_TEXTURE, this.getWidth() - 5, this.getY() - 5, hovered ? 14 : 0 ,0, 14, 22, 32, 32);
                 }
             }
         }
@@ -294,12 +294,12 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
         /**
          * Select the entry on mouse click
          *
-         * @param click {@link Click The mouse click}
+         * @param click {@link MouseButtonEvent The mouse click}
          * @param doubled {@link Boolean Whether there has been a double click}
          * @return {@link Boolean#TRUE True}
          */
         @Override
-        public boolean mouseClicked(final Click click, final boolean doubled) {
+        public boolean mouseClicked(final MouseButtonEvent click, final boolean doubled) {
             if(this.menu != null) {
                 this.menu.isSelectingUpwards = false;
                 this.menu.shouldPlayClickHeaderSound = true;
@@ -370,7 +370,7 @@ public class MinepediaMenuWidget extends AlwaysSelectedEntryListWidget<Minepedia
          * @return The {@link Identifier texture identifier}
          */
         public Identifier getTexture() {
-            return Identifier.of(Minepedia.MOD_ID, "entries/images/" + name + ".png");
+            return Identifier.fromNamespaceAndPath(Minepedia.MOD_ID, "entries/images/" + name + ".png");
         }
 
     }

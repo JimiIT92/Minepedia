@@ -2,17 +2,17 @@ package org.minepedia.screen.widget;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.gui.widget.MultilineTextWidget;
-import net.minecraft.client.gui.widget.ScrollableWidget;
-import net.minecraft.client.resource.language.I18n;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractScrollArea;
+import net.minecraft.client.gui.components.MultiLineTextWidget;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import org.minepedia.Minepedia;
 import org.minepedia.util.AssetUtils;
 
@@ -20,20 +20,20 @@ import org.minepedia.util.AssetUtils;
  * Widget for a {@link Minepedia Minepedia} entry
  */
 @Environment(EnvType.CLIENT)
-public class MinepediaEntryWidget extends ScrollableWidget {
+public class MinepediaEntryWidget extends AbstractScrollArea {
 
     /**
      * The {@link Integer X Coordinate Offset}
      */
     private final int OFFSET_X = 5;
     /**
-     * The {@link TextRenderer Text Renderer instance}
+     * The {@link Font Text Renderer instance}
      */
-    private final TextRenderer textRenderer;
+    private final Font textRenderer;
     /**
-     * The {@link MultilineTextWidget Multiline Text Widget}
+     * The {@link MultiLineTextWidget Multiline Text Widget}
      */
-    private MultilineTextWidget text;
+    private MultiLineTextWidget text;
     /**
      * The {@link MinepediaMenuWidget.MinepediaMenuItem related Menu Item Entry}
      */
@@ -52,23 +52,23 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      * @param y {@link Integer The widget Y coordinate}
      * @param width {@link Integer The widget width}
      * @param height {@link Integer The widget height}
-     * @param textRenderer {@link TextRenderer The Text Renderer instance}
+     * @param textRenderer {@link Font The Text Renderer instance}
      */
-    public MinepediaEntryWidget(final int x, final int y, final int width, final int height, final TextRenderer textRenderer) {
-        super(x, y, width, height, Text.empty());
-        this.text = new MultilineTextWidget(Text.empty(), textRenderer).setMaxWidth(this.getWidth() - this.getPadding());
+    public MinepediaEntryWidget(final int x, final int y, final int width, final int height, final Font textRenderer) {
+        super(x, y, width, height, Component.empty(), AbstractScrollArea.defaultSettings(8));
+        this.text = new MultiLineTextWidget(Component.empty(), textRenderer).setMaxWidth(this.getWidth() - this.getPadding());
         this.textRenderer = textRenderer;
     }
 
     /**
-     * Change the {@link MultilineTextWidget text} when a new {@link MinepediaMenuWidget.MinepediaMenuItem Menu Item entry} is selected
+     * Change the {@link MultiLineTextWidget text} when a new {@link MinepediaMenuWidget.MinepediaMenuItem Menu Item entry} is selected
      *
      * @param entry {@link MinepediaMenuWidget.MinepediaMenuItem The selected Menu Item entry}
      */
     public void selectEntry(final MinepediaMenuWidget.MinepediaMenuItem entry) {
         this.entry = entry;
         final String entryText = AssetUtils.readEntry(entry.getSection(), entry.getKey());
-        this.text = new MultilineTextWidget(entryText.isBlank() ? Text.empty() : this.getText(entryText), textRenderer).setMaxWidth(this.getWidth() - this.getPadding());
+        this.text = new MultiLineTextWidget(entryText.isBlank() ? Component.empty() : this.getText(entryText), textRenderer).setMaxWidth(this.getWidth() - this.getPadding());
         final int textY = this.getY() + 10;
         this.text.setPosition(this.getX() + OFFSET_X, textY);
         this.imageY = 0;
@@ -80,8 +80,8 @@ public class MinepediaEntryWidget extends ScrollableWidget {
             }
             this.imageY = getImageY(image);
         }
-        this.setScrollY(0);
-        this.refreshScroll();
+        this.setScrollAmount(0);
+        this.refreshScrollAmount();
     }
 
     /**
@@ -96,13 +96,13 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     /**
      * Render the entry details
      *
-     * @param context {@link DrawContext The Draw Context}
+     * @param context {@link GuiGraphicsExtractor The Draw Context}
      * @param mouseX {@link Integer The mouse X coordinate}
      * @param mouseY {@link Integer The mouse Y coordinate}
      * @param delta {@link Float The screen delta time}
      */
     @Override
-    public void renderWidget(final DrawContext context, final int mouseX, final int mouseY, final float delta) {
+    public void extractWidgetRenderState(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final float delta) {
         if (!this.visible) {
             return;
         }
@@ -113,31 +113,31 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     /**
      * Render the background
      *
-     * @param context {@link DrawContext The Draw Context}
+     * @param context {@link GuiGraphicsExtractor The Draw Context}
      */
-    private void renderBackground(final DrawContext context) {
-        drawTexture(context, Screen.MENU_BACKGROUND_TEXTURE, this.getX(), this.getY(), this.getRight(), this.getBottom(), this.width, this.height,32, 32);
+    private void renderBackground(final GuiGraphicsExtractor context) {
+        drawTexture(context, Screen.MENU_BACKGROUND, this.getX(), this.getY(), this.getRight(), this.getBottom(), this.width, this.height,32, 32);
     }
 
     /**
-     * Add the narrations to the {@link NarrationMessageBuilder narrator}
+     * Add the narrations to the {@link NarrationElementOutput narrator}
      *
-     * @param builder The {@link NarrationMessageBuilder Narration Message Builder}
+     * @param builder The {@link NarrationElementOutput Narration Message Builder}
      */
     @Override
-    protected void appendClickableNarrations(final NarrationMessageBuilder builder) {
-        builder.put(NarrationPart.TITLE, this.getMessage());
+    protected void updateWidgetNarration(final NarrationElementOutput builder) {
+        builder.add(NarratedElementType.TITLE, this.getMessage());
     }
 
     /**
      * Render the entry details when the scrollbars are visible
      *
-     * @param context {@link DrawContext The Draw Context}
+     * @param context {@link GuiGraphicsExtractor The Draw Context}
      * @param mouseX {@link Integer The mouse X coordinate}
      * @param mouseY {@link Integer The mouse Y coordinate}
      * @param delta {@link Float The screen delta time}
      */
-    protected void renderContents(final DrawContext context, final int mouseX, final int mouseY, final float delta) {
+    protected void renderContents(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final float delta) {
         if(this.entry != null) {
             final MinepediaMenuWidget.ImageData imageData = this.entry.getImage();
             context.enableScissor(this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1);
@@ -146,7 +146,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
                 this.drawEntryImage(context);
             }
 
-            this.text.render(context, mouseX, mouseY, delta);
+            this.text.extractRenderState(context, mouseX, mouseY, delta);
 
             if(imageData != null && imageData.position().equals(MinepediaMenuWidget.ImagePosition.END)) {
                 this.drawEntryImage(context);
@@ -159,7 +159,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     /**
      * Draw a texture
      *
-     * @param context {@link DrawContext The Draw Context}
+     * @param context {@link GuiGraphicsExtractor The Draw Context}
      * @param texture {@link Identifier The texture Identifier}
      * @param x {@link Integer The texture X coordinate}
      * @param y {@link Integer The texture Y coordinate}
@@ -170,22 +170,22 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      * @param textureWidth {@link Integer The texture total width}
      * @param textureHeight {@link Integer The texture total height}
      */
-    private void drawTexture(final DrawContext context, final Identifier texture, final int x, final int y, final int u, final int v, final int width, final int height, final int textureWidth, final int textureHeight) {
-        context.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+    private void drawTexture(final GuiGraphicsExtractor context, final Identifier texture, final int x, final int y, final int u, final int v, final int width, final int height, final int textureWidth, final int textureHeight) {
+        context.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight);
     }
 
     /**
      * Render the entry image
      *
-     * @param context {@link DrawContext The Draw Context}
+     * @param context {@link GuiGraphicsExtractor The Draw Context}
      */
-    private void drawEntryImage(final DrawContext context) {
+    private void drawEntryImage(final GuiGraphicsExtractor context) {
         final MinepediaMenuWidget.ImageData image = this.entry.getImage();
-        context.getMatrices().pushMatrix();
-        context.getMatrices().scaling(IMAGE_SCALE_FACTOR);
+        context.pose().pushMatrix();
+        context.pose().scaling(IMAGE_SCALE_FACTOR);
         final int x = this.getX() + this.getWidth() + (this.getWidth() / 2) + OFFSET_X;
         drawTexture(context, image.getTexture(), x, this.imageY, 0, 0, image.width(), image.height(), 512, 512);
-        context.getMatrices().popMatrix();
+        context.pose().popMatrix();
     }
 
 
@@ -210,7 +210,7 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     }
 
     @Override
-    protected int getContentsHeightWithPadding() {
+    protected int contentHeight() {
         return this.getContentHeight() + 20;
     }
 
@@ -220,18 +220,18 @@ public class MinepediaEntryWidget extends ScrollableWidget {
      * @return {@link Double The scrollbar delta amount}
      */
     @Override
-    protected double getDeltaYPerScroll() {
-        return this.textRenderer.fontHeight;
+    protected double scrollRate() {
+        return this.textRenderer.lineHeight;
     }
 
     /**
-     * Get the {@link Text translated entry text}
+     * Get the {@link Component translated entry text}
      *
      * @param rawText {@link String The raw entry text}
-     * @return {@link Text The translated entry text}
+     * @return {@link Component The translated entry text}
      */
-    private Text getText(final String rawText) {
-        return Text.literal(I18n.translate(rawText).replace("Â", "").replace("â", ""));
+    private Component getText(final String rawText) {
+        return Component.literal(I18n.get(rawText).replace("Â", "").replace("â", ""));
     }
 
     private int getImageY(final MinepediaMenuWidget.ImageData image) {
@@ -241,9 +241,9 @@ public class MinepediaEntryWidget extends ScrollableWidget {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
         verticalAmount *= 5;
-        final double previousScrollY = this.getScrollY();
+        final double previousScrollY = this.scrollBarY();
         final boolean scrolled = super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
-        if(scrolled && (previousScrollY != this.getScrollY())) {
+        if(scrolled && (previousScrollY != this.scrollBarY())) {
             this.text.setY(this.text.getY() + (int)verticalAmount);
             final MinepediaMenuWidget.ImageData image = this.entry.getImage();
             if(image != null) {

@@ -1,13 +1,12 @@
 package org.minepedia.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.TitleScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextIconButtonWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.SpriteIconButton;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaIndexScreen;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,11 +21,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class TitleScreenMixin extends Screen {
 
     /**
-     * Constructor. Set the {@link Text screen title}
+     * Constructor. Set the {@link Component screen title}
      *
-     * @param title {@link Text The screen title}
+     * @param title {@link Component The screen title}
      */
-    public TitleScreenMixin(final Text title) {
+    public TitleScreenMixin(final Component title) {
         super(title);
     }
 
@@ -37,14 +36,14 @@ public abstract class TitleScreenMixin extends Screen {
      */
     @Inject(method = "init", at = @At(value = "RETURN", target = "Lnet/minecraft/client/gui/screen/TitleScreen;init()V"))
     private void onInitWidgets(final CallbackInfo callbackInfo) {
-        final TextIconButtonWidget minepediaButton = this.addDrawableChild(
-                TextIconButtonWidget.builder(Text.translatable("ui.minepedia.how_to_play"), button -> MinecraftClient.getInstance().setScreen(new MinepediaIndexScreen()), true)
+        final SpriteIconButton minepediaButton = this.addRenderableWidget(
+                SpriteIconButton.builder(Component.translatable("ui.minepedia.how_to_play"),  button -> Minecraft.getInstance().setScreen(new MinepediaIndexScreen()), true)
                         .width(20)
-                        .texture(Identifier.of(Minepedia.MOD_ID, "icon/" + Minepedia.MOD_ID), 16, 16)
+                        .sprite(Identifier.fromNamespaceAndPath(Minepedia.MOD_ID, "icon/" + Minepedia.MOD_ID), 16, 16)
                         .build()
         );
-        final Element singlePlayerElement = this.children().stream().filter(children -> children instanceof ButtonWidget buttonWidget && buttonWidget.getMessage().equals(Text.translatable("menu.singleplayer"))).findFirst().orElse(null);
-        if(singlePlayerElement instanceof ButtonWidget singlePlayerButton) {
+        var singlePlayerElement = this.children().stream().filter(children -> children instanceof Button buttonWidget && buttonWidget.getMessage().equals(Component.translatable("menu.singleplayer"))).findFirst().orElse(null);
+        if(singlePlayerElement instanceof Button singlePlayerButton) {
             minepediaButton.setPosition(singlePlayerButton.getRight() + 4, singlePlayerButton.getY());
         }
     }

@@ -8,7 +8,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.minepedia.Minepedia;
-import org.minepedia.screen.MinepediaIndexScreen;
+import org.minepedia.screen.MinepediaScreenNew;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,7 +38,7 @@ public abstract class TitleScreenMixin extends Screen {
     private void onInitWidgets(final CallbackInfo callbackInfo) {
         if(Minepedia.config().SHOW_MINEPEDIA_BUTTON) {
             final SpriteIconButton minepediaButton = this.addRenderableWidget(
-                    SpriteIconButton.builder(Component.translatable("ui.minepedia.how_to_play"),  button -> Minecraft.getInstance().setScreen(new MinepediaIndexScreen()), true)
+                    SpriteIconButton.builder(Component.translatable("ui.minepedia.how_to_play"),  button -> Minecraft.getInstance().setScreen(new MinepediaScreenNew()), true)
                             .width(20)
                             .sprite(Identifier.fromNamespaceAndPath(Minepedia.MOD_ID, "icon/" + Minepedia.MOD_ID), 16, 16)
                             .build()

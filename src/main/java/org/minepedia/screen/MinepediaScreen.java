@@ -18,6 +18,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.widget.MinepediaEntryWidget;
 import org.minepedia.screen.widget.MinepediaMenuWidget;
@@ -56,7 +57,7 @@ public abstract class MinepediaScreen extends Screen {
         super.onClose();
         final Screen parent = this.getParent();
         if(parent != null) {
-            this.minecraft.setScreen(parent);
+            this.minecraft.setScreenAndShow(parent);
         }
     }
 
@@ -126,7 +127,7 @@ public abstract class MinepediaScreen extends Screen {
             super.setSelected(menuItem);
             if (menuItem != null && !menuItem.menuItem.isHeader()) {
                 if(menuItem.menuItem.screenSupplier != null) {
-                    Objects.requireNonNull(MinepediaScreen.this.minecraft).setScreen(menuItem.menuItem.screenSupplier.get());
+                    Objects.requireNonNull(MinepediaScreen.this.minecraft).setScreenAndShow(menuItem.menuItem.screenSupplier.get());
                 } else {
                     MinepediaScreen.this.selectedMenuEntry = menuItem.menuItem;
                     MinepediaScreen.this.setHeader();
@@ -145,7 +146,7 @@ public abstract class MinepediaScreen extends Screen {
                 this.text = menuItem.getStyledText();
             }
 
-            public Component getNarration() {
+            public @NonNull Component getNarration() {
                 return Component.translatable("narrator.select", this.text);
             }
 
@@ -175,7 +176,7 @@ public abstract class MinepediaScreen extends Screen {
              * @return {@link Boolean#TRUE True}
              */
             @Override
-            public boolean mouseClicked(final MouseButtonEvent click, final boolean doubled) {
+            public boolean mouseClicked(final @NonNull MouseButtonEvent click, final boolean doubled) {
                 if(!this.menuItem.isHeader()) {
                     MinepediaScreen.MinepediaEntriesWidget.this.setSelected(this);
                     Objects.requireNonNull(MinepediaScreen.this.minecraft).getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));

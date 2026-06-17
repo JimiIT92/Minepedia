@@ -59,7 +59,7 @@ public class MinepediaMenuWidget extends ObjectSelectionList<MinepediaMenuWidget
      * @param x {@link Integer The widget X coordinate}
      */
     public MinepediaMenuWidget(final Minecraft minecraftClient, final int x) {
-        super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.screen).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
+        super(minecraftClient, 150, Objects.requireNonNull(minecraftClient.gui.screen()).height - WIDGET_Y_OFFSET, WIDGET_Y_OFFSET, 20);
         this.setPosition(x, WIDGET_Y);
         this.entries = new ArrayList<>();
         this.isSelectingUpwards = false;
@@ -76,12 +76,12 @@ public class MinepediaMenuWidget extends ObjectSelectionList<MinepediaMenuWidget
         if (entry != null) {
             if(!entry.isHeader) {
                 if(entry.screenSupplier != null) {
-                    this.minecraft.setScreen(entry.screenSupplier.get());
+                    this.minecraft.setScreenAndShow(entry.screenSupplier.get());
                 } else {
                     super.setSelected(entry);
                 }
             } else {
-                 final int index = Math.max(1, Math.min(this.entries.indexOf(entry) + (isSelectingUpwards ? -1 : 1), this.entries.size() - 1));
+                 final int index = Math.clamp(this.entries.indexOf(entry) + (isSelectingUpwards ? -1 : 1), 1, this.entries.size() - 1);
                  this.setSelected(this.entries.get(index));
                  if(this.shouldPlayClickHeaderSound) {
                      this.playClickSound();
@@ -97,7 +97,7 @@ public class MinepediaMenuWidget extends ObjectSelectionList<MinepediaMenuWidget
      * @return The {@link Integer Entries count}
      */
     @Override
-    protected int addEntry(final MinepediaMenuItem entry) {
+    protected int addEntry(final @NonNull MinepediaMenuItem entry) {
         entries.add(entry);
         return super.addEntry(entry);
     }
@@ -282,7 +282,7 @@ public class MinepediaMenuWidget extends ObjectSelectionList<MinepediaMenuWidget
          * @param deltaTicks {@link Float The delta ticks}
          */
         @Override
-        public void extractContent(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
+        public void extractContent(final @NonNull GuiGraphicsExtractor context, final int mouseX, final int mouseY, final boolean hovered, final float deltaTicks) {
             if(this.menu != null) {
                 context.textWithWordWrap(this.menu.minecraft.font, this.getStyledText(), this.getX() + 5, this.getY() + 2, this.getWidth(), this.getTextColor(), false);
                 if(this.screenSupplier != null) {
@@ -299,7 +299,7 @@ public class MinepediaMenuWidget extends ObjectSelectionList<MinepediaMenuWidget
          * @return {@link Boolean#TRUE True}
          */
         @Override
-        public boolean mouseClicked(final MouseButtonEvent click, final boolean doubled) {
+        public boolean mouseClicked(final @NonNull MouseButtonEvent click, final boolean doubled) {
             if(this.menu != null) {
                 this.menu.isSelectingUpwards = false;
                 this.menu.shouldPlayClickHeaderSound = true;

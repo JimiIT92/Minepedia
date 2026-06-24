@@ -29,7 +29,7 @@ public final class MinepediaKeyBindings {
         MINEPEDIA_KEY = registerKeyBinding("screen", GLFW.GLFW_KEY_K);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (MINEPEDIA_KEY.isDown()) {
-                client.setScreen(new MinepediaIndexScreen());
+                client.setScreenAndShow(new MinepediaIndexScreen());
             }
         });
     }

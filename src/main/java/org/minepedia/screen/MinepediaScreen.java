@@ -87,10 +87,11 @@ public abstract class MinepediaScreen extends Screen {
 
         this.layout.addToContents(gridWidget);
         this.layout.visitWidgets(this::addRenderableWidget);
-        this.refreshWidgetPositions();
+        this.repositionElements();
     }
 
-    protected void refreshWidgetPositions() {
+    @Override
+    protected void repositionElements() {
         this.layout.arrangeElements();
         this.menuEntries.updateSize(this.width / 2, this.layout);
         this.content.setSize(this.width / 2, this.layout.getContentHeight());

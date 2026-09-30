@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 import org.minepedia.Minepedia;
 import org.minepedia.screen.MinepediaIndexScreen;
 
@@ -26,7 +25,7 @@ public final class MinepediaKeyBindings {
      * Initialize the {@link KeyMapping Key Bindings}
      */
     public static void init() {
-        MINEPEDIA_KEY = registerKeyBinding("screen", GLFW.GLFW_KEY_K);
+        MINEPEDIA_KEY = registerKeyBinding("screen", InputConstants.KEY_K);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (MINEPEDIA_KEY.isDown()) {
                 client.setScreenAndShow(new MinepediaIndexScreen());
@@ -44,7 +43,7 @@ public final class MinepediaKeyBindings {
     private static KeyMapping registerKeyBinding(final String name, final int keyCode) {
         return KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key." + Minepedia.MOD_ID + "."  + name,
-                InputConstants.Type.KEYSYM,
+                InputConstants.Type.KEYBOARD,
                 keyCode,
                 KeyMapping.Category.register(Identifier.fromNamespaceAndPath(Minepedia.MOD_ID, "category." + Minepedia.MOD_ID))
         ));
